@@ -1,0 +1,62 @@
+Yuri: Lógica do Sistema e Gerenciamento de Dados*  
+1. *Estruturação do Sistema:*  
+   - Definir as classes principais (ex: Candidato, Eleitor, Votacao).  
+   - Criar a lógica de cadastro de candidatos e eleitores (vetores, listas ou arquivos).  
+   - Implementar a validação de dados (ex: CPF, título de eleitor).  
+
+2. *Lógica da Votação:*  
+   - Desenvolver o sistema de votação (registro de votos, evitar votos duplicados).  
+   - Criar funções para calcular resultados (contagem de votos, porcentagens).  
+
+3. *Armazenamento em Arquivos:*  
+   - Salvar dados em arquivos .txt ou .bin (candidatos, eleitores, votos).  
+   - Carregar dados ao iniciar o programa.  
+
+---
+
+Yago: Interface do Usuário (CLI) e Menu*  
+1. *Menus Interativos:*  
+   - Criar menus usando cout e cin para:  
+     - Cadastro de eleitores/candidatos.  
+     - Tela de votação.  
+     - Visualização de resultados.  
+
+2. *Interface Amigável:*  
+   - Validar entradas do usuário (ex: evitar caracteres inválidos).  
+   - Formatar a exibição de resultados (tabelas, listas).  
+
+3. *Relatórios:*  
+   - Gerar relatórios simples (ex: lista de candidatos mais votados, votos nulos/brancos).  
+
+---
+
+
+
+Jadiel: Segurança e Funcionalidades Extras
+1. *Autenticação:
+   - Implementar login para administradores (ex: senha mestra).  
+   - Garantir que apenas eleitores cadastrados possam votar.  
+
+2. *Tratamento de Erros:*  
+   - Lidar com exceções (ex: arquivos não encontrados, divisão por zero).  
+   - Evitar fraudes (ex: votar mais de uma vez).  
+
+3. *Funcionalidades Extras:*  
+   - Adicionar um sistema de auditoria (log de ações). 
+
+
+
+
+
+
+ *Tarefas em Conjunto (Todos os Integrantes)*  
+1. *Testes:*  
+   - Realizar testes unitários para cada função.  
+   - Simular cenários reais (ex: votação em massa).  
+
+2. *Documentação:*  
+   - Comentar o código.  
+   - Criar um README com instruções de uso.  
+
+3. *Otimização:*  
+   - Revisar o código para melhorar performance/clareza.
