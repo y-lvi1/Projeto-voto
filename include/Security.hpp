@@ -1,6 +1,8 @@
 #ifndef SECURITY_HPP
 #define SECURITY_HPP
 
+#include <string>
+
 class Security{
     private:
 
