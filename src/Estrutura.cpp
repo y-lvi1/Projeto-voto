@@ -5,6 +5,7 @@ const int ano_atual = 2025;
 
 using namespace std;
 
+// Gerador do titulo de eleitor
 string num_eleitor(){
     srand(time(nullptr));
     string num = "";
@@ -12,8 +13,8 @@ string num_eleitor(){
     for (int i = 1; i < 12; ++i)
         num += to_string(rand() % 10);
     return num;
-};
-
+}
+// Dados do usuario
 struct usuario{
     string nome;
     string genero;
@@ -23,6 +24,7 @@ struct usuario{
     int idade;
 };
 
+//Cadastro do usuario no sistema
 class Cadastro{
     private:
     usuario cadastrado;
@@ -44,6 +46,7 @@ class Cadastro{
     }
 };
 
+//Dados candidato
 class Candidato : public Cadastro{
     private:
     int numero_candidato;
@@ -60,13 +63,11 @@ class Candidato : public Cadastro{
     }
     };
 
+ //Dados eleitor   
 class Eleitor : public Cadastro{
     private:
     bool Votou;
-    bool ativo;
+    Eleitor(bool voto, string nome, string cpf, string genero, string nasc) : Cadastro(nome, cpf, genero, nasc){
+        Votou = voto;
+    }
 };
-
-int main() {
- Cadastro teste("Yuri", "685.492.031-32", "Masculino", "06072004");
- teste.mostrar_dados();
-}
