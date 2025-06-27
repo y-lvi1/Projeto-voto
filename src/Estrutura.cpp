@@ -41,7 +41,7 @@ class Cadastro{
 
     }
     
-    void mostrar_dados(){
+virtual void mostrar_dados(){
         cout << "Nome: " << cadastrado.nome << endl << "CPF: " << cadastrado.cpf << endl << "Idade: " << cadastrado.idade << endl << "Titulo de eleitor : " << cadastrado.num_eleitor;;
     }
 };
@@ -54,12 +54,20 @@ class Candidato : public Cadastro{
     string partido;
     string cargo_disputado;
     public:
+    int votos = 0;
     Candidato(string nome, string cpf, string genero, string nasc, 
         int numero, string nome_urna, string partido, string cargo): Cadastro(nome, cpf, genero, nasc){
         numero_candidato = numero;
         nome_urna = nome_urna;
         partido = partido;
         cargo_disputado = cargo;
+    }
+      void mostrar_dados() override{
+        cout << "Nome: " << nome_urna << endl << "cargo disputado" << cargo_disputado << endl << "Numero do candidato: " << numero_candidato << endl << "Partido: " << partido << endl;
+    }
+
+    void registrar_voto(){
+    votos++;
     }
     };
 
@@ -69,5 +77,15 @@ class Eleitor : public Cadastro{
     bool Votou;
     Eleitor(bool voto, string nome, string cpf, string genero, string nasc) : Cadastro(nome, cpf, genero, nasc){
         Votou = voto;
+    }
+    void votar(Candidato& votacao){
+        if (Votou){
+          cout << "Usuário ja realizou o voto." << endl;
+        }
+        else{
+         votacao.registrar_voto();
+         Votou = true;
+         cout << "Voto registrado." << endl;
+        }
     }
 };
