@@ -4,7 +4,6 @@
 int main()
 {
     //*EXEMPLO DE USO DA CLASSE SECURITY*//
-    
     /*
     Security security;
     while (1)
