@@ -38,12 +38,15 @@ class Cadastro{
          cadastrado.idade = ano_atual - ano_nasc;
 
     }
-    //Getters
+    //Getters do Cadastro
     string getNome() const {return cadastrado.nome;}
     string getCpf() const {return cadastrado.cpf;}
     string getNasc() const {return cadastrado.data_nasc;}
     int getIdade() const {return cadastrado.idade;}
-
+//Setters cadastro
+void setNome(const string Nome){cadastrado.nome = Nome;}
+void setCpf(const string cpf){cadastrado.cpf = cpf;}
+void setData_nasc(const string nascimento){cadastrado.data_nasc = nascimento;}
 
 virtual void mostrar_dados(){
         cout << "Nome: " << cadastrado.nome << endl << "CPF: " << cadastrado.cpf << endl << "Idade: " << cadastrado.idade << endl << "Titulo de eleitor : " << cadastrado.num_eleitor;;
@@ -67,9 +70,16 @@ class Candidato : public Cadastro{
         cargo_disputado = cargo;
     }
 
+//Getters do Candidato
 string getNomeUrna() const {return nome_urna;}
 string getPartido() const {return partido;}
 string getCargo() const {return cargo_disputado;}
+
+//Setters do candidato
+void setNome(const string Nome){nome_urna = Nome;}
+void setNumero(const int numero){numero_candidato = numero;} 
+void setPartido(const string Partido){partido = Partido;}
+void setCargo(const string Cargo){cargo_disputado = Cargo;}
 
       void mostrar_dados() override{
         cout << "Nome: " << nome_urna << endl << "cargo disputado" << cargo_disputado << endl << "Numero do candidato: " << numero_candidato << endl << "Partido: " << partido << endl;
@@ -88,8 +98,9 @@ class Eleitor : public Cadastro{
     Eleitor(bool voto, string nome, string cpf, string nasc) : Cadastro(nome, cpf, nasc){
     Votou = voto;
     }
-
+//Get e set
     bool getVoto() const {return Votou;}
+    void setVoto(const bool VotoApurado){Votou = VotoApurado;}
 
     void votar(Candidato& votacao){
         if (getVoto()){
