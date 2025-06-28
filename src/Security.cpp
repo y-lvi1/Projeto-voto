@@ -6,10 +6,11 @@
 
 Security::Security()
 {
-    std::ifstream file("config.txt");
+    std::ifstream file("hash.txt");
     if (!file.is_open())
     {
-        std::cout << "Error: O arquivo config.txt não pôde ser aberto!" << std::endl;
+        std::cout << "Error: O arquivo hash.txt não pôde ser aberto!\n" << std::endl;
+        arquivo_aberto = false;
         return;
     }
     file >> hash_loaded;
@@ -21,18 +22,15 @@ bool Security::autenticate_admin()
     std::string user_input;
     std::string hash_input;
 
-    std::cout << "Digite a senha de administrador: ";
     std::cin >> user_input;
     hash_input = picosha2::hash256_hex_string(user_input);
 
     if (hash_input == hash_loaded)
     {
-        std::cout << "Autenticação bem-sucedida!" << std::endl;
         return true;
     }
     else
     {
-        std::cout << "Senha incorreta!" << std::endl;
         return false;
     }
 }

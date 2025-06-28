@@ -7,12 +7,14 @@ class Security{
     private:
 
     std::string hash_loaded;
+    
 
     public:
 
+    bool arquivo_aberto = true; 
+
     Security();
 
-    void load_hash();
     bool autenticate_admin();
 };
 
