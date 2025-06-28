@@ -1,11 +1,11 @@
 #ifndef ESTRUTURA_HPP
 #define ESTRUTURA_HPP
-
+#include <string>
 namespace usuario{
-    string num_eleitor();
     struct usuario;
-    class cadastro;
-    class Candidato : public Cadastro;
-    class Eleitor : public Cadastro;
+    std::string num_eleitor();
 }
-#endif //
+class Cadastro{};
+class Candidato : public Cadastro{};
+class Eleitor : public Cadastro{};
+#endif

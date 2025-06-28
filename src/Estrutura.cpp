@@ -17,7 +17,6 @@ string num_eleitor(){
 // Dados do usuario
 struct usuario{
     string nome;
-    string genero;
     string cpf;
     string data_nasc;
     string num_eleitor;
@@ -29,9 +28,8 @@ class Cadastro{
     private:
     usuario cadastrado;
     public:
-    Cadastro(string nome, string cpf, string genero, string nasc){
+    Cadastro(string nome, string cpf, string nasc){
         cadastrado.nome = nome;
-        cadastrado.genero = genero;
         cadastrado.cpf = cpf;
         cadastrado.data_nasc = nasc;
         cadastrado.num_eleitor = num_eleitor();
@@ -40,7 +38,13 @@ class Cadastro{
          cadastrado.idade = ano_atual - ano_nasc;
 
     }
-    
+    //Getters
+    string getNome() const {return cadastrado.nome;}
+    string getCpf() const {return cadastrado.cpf;}
+    string getNasc() const {return cadastrado.data_nasc;}
+    int getIdade() const {return cadastrado.idade;}
+
+
 virtual void mostrar_dados(){
         cout << "Nome: " << cadastrado.nome << endl << "CPF: " << cadastrado.cpf << endl << "Idade: " << cadastrado.idade << endl << "Titulo de eleitor : " << cadastrado.num_eleitor;;
     }
@@ -55,13 +59,18 @@ class Candidato : public Cadastro{
     string cargo_disputado;
     public:
     int votos = 0;
-    Candidato(string nome, string cpf, string genero, string nasc, 
-        int numero, string nome_urna, string partido, string cargo): Cadastro(nome, cpf, genero, nasc){
+    Candidato(string nome, string cpf, string nasc, 
+        int numero, string nome_urna, string partido, string cargo): Cadastro(nome, cpf, nasc){
         numero_candidato = numero;
         nome_urna = nome_urna;
         partido = partido;
         cargo_disputado = cargo;
     }
+
+string getNomeUrna() const {return nome_urna;}
+string getPartido() const {return partido;}
+string getCargo() const {return cargo_disputado;}
+
       void mostrar_dados() override{
         cout << "Nome: " << nome_urna << endl << "cargo disputado" << cargo_disputado << endl << "Numero do candidato: " << numero_candidato << endl << "Partido: " << partido << endl;
     }
@@ -75,11 +84,15 @@ class Candidato : public Cadastro{
 class Eleitor : public Cadastro{
     private:
     bool Votou;
-    Eleitor(bool voto, string nome, string cpf, string genero, string nasc) : Cadastro(nome, cpf, genero, nasc){
-        Votou = voto;
+    public:
+    Eleitor(bool voto, string nome, string cpf, string nasc) : Cadastro(nome, cpf, nasc){
+    Votou = voto;
     }
+
+    bool getVoto() const {return Votou;}
+
     void votar(Candidato& votacao){
-        if (Votou){
+        if (getVoto()){
           cout << "Usuário ja realizou o voto." << endl;
         }
         else{
