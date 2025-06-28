@@ -2,9 +2,10 @@
 #include <iostream>
 #include "Interface.hpp"
 #include <string>
+#include "Estrutura.hpp"
 using namespace std;
 void Interface::inicial(){
-    string opcao="";
+    int opcao=0;
     cout<<"Bem vindo ao sistema de votacao brasileiro!"<<endl;
     cout<<""<<endl;
     cout<<""<<endl;
@@ -13,23 +14,26 @@ void Interface::inicial(){
     cout<<"3. Resultado das Eleições."<<endl;
     cout<<"4. Entrar como administrador"<<endl;
     cin>>opcao;
-    if(opcao == "1"){
+    switch (opcao) {
+    case 1:
         Cadastrar();
-    }
-    if(opcao == "2"){
+        break;
+    case 2:
         Logar();
-    }
-    if(opcao == "3"){
+        break;
+    case 3:
         Resultado();
-    }
-    if(opcao == "4"){
+        break;
+    case 4:
         ADM();
-    }
-    else{
+        break;
+    default:
         cout<<"Opcao invalida!"<<endl;
-    }
+        break;
+    // Código se nenhuma das opções anteriores combinar
 }
-    void Logar() {
+}
+    void Interface::Logar() {
         Security security;
         while (1)
         {
@@ -43,12 +47,26 @@ void Interface::inicial(){
             }
         }
     }
-    void Cadastrar() {
-        
+    void Interface::Cadastrar() {
+        cout << "Digite seu nome: "<< endl;
+        cout << "Digite seu CPF: "<< endl;
+        cout << "Digite sua senha: "<< endl;
+        // Aqui você pode adicionar o código para cadastrar o usuário
     }
-    void Resultado(){
-
+    void Interface::Resultado(){
+        cout << "Exibindo resultados das eleições..." << endl;
+        // Aqui você pode adicionar o código para exibir os resultados das eleições
     }
-    void ADM(){
+    void Interface::ADM(){
+        Security security;
+        if (security.autenticate_admin()) {
+            cout << "Bem-vindo, administrador!" << endl;
+            administrando();
+        } else {
+            cout << "Falha na autenticação do administrador." << endl;
+        }
+    }
+    void Interface::administrando() {
 
+        // Aqui você pode adicionar o código para administrar o sistema
     }

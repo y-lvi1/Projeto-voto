@@ -6,8 +6,11 @@ class Interface{
 
     public:
     void inicial();
-
-
+    void Logar();
+    void Cadastrar();
+    void Resultado();
+    void ADM();
+    void administrando();
 };
 
 #endif // INTERFACE_HPP
