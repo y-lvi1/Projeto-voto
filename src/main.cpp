@@ -1,8 +1,12 @@
 #include "Security.hpp"
 #include <iostream>
-
+#include "interface.hpp"
 int main()
 {
+    while(1){
+    Interface interface;
+    interface.inicial();
+    }
     //*EXEMPLO DE USO DA CLASSE SECURITY*//
     
     /*

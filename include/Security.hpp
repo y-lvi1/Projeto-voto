@@ -12,7 +12,6 @@ class Security{
 
     Security();
 
-    void load_hash();
     bool autenticate_admin();
 };
 
