@@ -48,9 +48,15 @@ void Interface::inicial(){
         }
     }
     void Interface::Cadastrar() {
+        string nome, cpf, nasc;
+        cout << "Bem-vindo ao cadastro de usuário!" << endl;
         cout << "Digite seu nome: "<< endl;
+        getline(cin, nome);
         cout << "Digite seu CPF: "<< endl;
-        cout << "Digite sua senha: "<< endl;
+        getline(cin, cpf);
+        cout << "Digite sua data de nascimento (DD/MM/AAAA): "<< endl;
+        getline(cin, nasc);
+        Cadastro Cadastro(nome, cpf, nasc);
         // Aqui você pode adicionar o código para cadastrar o usuário
     }
     void Interface::Resultado(){
@@ -58,7 +64,9 @@ void Interface::inicial(){
         // Aqui você pode adicionar o código para exibir os resultados das eleições
     }
     void Interface::ADM(){
+        
         Security security;
+        string senha;
         if (security.autenticate_admin()) {
             cout << "Bem-vindo, administrador!" << endl;
             administrando();
@@ -67,6 +75,19 @@ void Interface::inicial(){
         }
     }
     void Interface::administrando() {
+        int Adm_opcao;
+        cout << "1. Cadastrar Candidato" << endl;
+        cout << "2. Deletar Candidatos" << endl;
+        cin >> Adm_opcao;
+        switch (Adm_opcao) {
+        case 1:
+            // Cadastrar Candidato
 
+            break;
+        case 2:
+            cout << "Deletar Candidatos" << endl;
+
+            break;
         // Aqui você pode adicionar o código para administrar o sistema
+        }
     }
