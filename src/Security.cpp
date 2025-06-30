@@ -6,10 +6,10 @@
 
 Security::Security()
 {
-    std::ifstream file("config.txt");
+    std::ifstream file("hash.txt");
     if (!file.is_open())
     {
-        std::cout << "Error: O arquivo config.txt não pôde ser aberto!" << std::endl;
+        std::cout << "Error: O arquivo hash.txt não pôde ser aberto!" << std::endl;
         return;
     }
     file >> hash_loaded;

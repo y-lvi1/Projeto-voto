@@ -66,7 +66,6 @@ void Interface::inicial(){
         // Aqui você pode adicionar o código para exibir os resultados das eleições
     }
     void Interface::ADM(){
-        
         Security security;
         string senha;
         if (security.autenticate_admin()) {
@@ -78,13 +77,13 @@ void Interface::inicial(){
     }
     void Interface::administrando() {
         int Adm_opcao;
+        string nome, cpf, nasc, nome_urna, partido, cargo;
         cout << "1. Cadastrar Candidato" << endl;
         cout << "2. Deletar Candidatos" << endl;
         cin >> Adm_opcao;
         switch (Adm_opcao) {
         case 1:
-            // Cadastrar Candidato
-
+            cout << "Cadastrar Candidato" << endl;
             break;
         case 2:
             cout << "Deletar Candidatos" << endl;
