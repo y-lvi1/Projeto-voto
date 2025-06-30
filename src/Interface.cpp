@@ -50,13 +50,15 @@ void Interface::inicial(){
     void Interface::Cadastrar() {
         std::string nome, cpf, nasc;
         cout << "Bem-vindo ao cadastro de usuário!" << endl;
-        cout << "Digite seu nome: "<< endl;
-        getline(cin, nome);
-        cout << "Digite seu CPF: "<< endl;
-        getline(cin, cpf);
-        cout << "Digite sua data de nascimento (DD/MM/AAAA): "<< endl;
-        getline(cin, nasc);
+        cout << "Digite seu nome: "<< std::flush << endl;
+        getline(cin >> std::ws, nome);
+        cout << "Digite seu CPF: "<< std::flush << endl;
+        getline(cin >> std::ws, cpf);
+        cout << "Digite sua data de nascimento (DD/MM/AAAA)(Sem /): "<< std::flush << endl;
+        getline(cin >> std::ws, nasc);
         Cadastro Cadastro(nome, cpf, nasc);
+        Cadastro.mostrar_dados();
+        cout << endl;
         // Aqui você pode adicionar o código para cadastrar o usuário
     }
     void Interface::Resultado(){
