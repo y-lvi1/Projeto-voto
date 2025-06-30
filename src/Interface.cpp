@@ -48,7 +48,7 @@ void Interface::inicial(){
         }
     }
     void Interface::Cadastrar() {
-        string nome, cpf, nasc;
+        std::string nome, cpf, nasc;
         cout << "Bem-vindo ao cadastro de usuário!" << endl;
         cout << "Digite seu nome: "<< endl;
         getline(cin, nome);
