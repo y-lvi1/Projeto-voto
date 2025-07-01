@@ -2,7 +2,9 @@
 #include <iostream>
 #include "Interface.hpp"
 #include <string>
-#include "Estrutura.hpp"
+#include "Cadastro.hpp"
+#include "Candidato.hpp"
+#include "Eleitor.hpp"
 using namespace std;
 void Interface::Limpar_dados(){
     system("clear || cls");
