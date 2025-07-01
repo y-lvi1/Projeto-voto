@@ -4,6 +4,9 @@
 #include <string>
 #include "Estrutura.hpp"
 using namespace std;
+void Interface::Limpar_dados(){
+    system("clear || cls");
+}
 void Interface::inicial(){
     int opcao=0;
     cout<<"Bem vindo ao sistema de votacao brasileiro!"<<endl;
@@ -16,15 +19,19 @@ void Interface::inicial(){
     cin>>opcao;
     switch (opcao) {
     case 1:
+        Limpar_dados();
         Cadastrar();
         break;
     case 2:
+        Limpar_dados();
         Logar();
         break;
     case 3:
+        Limpar_dados();
         Resultado();
         break;
     case 4:
+        Limpar_dados();
         ADM();
         break;
     default:
@@ -87,7 +94,6 @@ void Interface::inicial(){
             break;
         case 2:
             cout << "Deletar Candidatos" << endl;
-
             break;
         // Aqui você pode adicionar o código para administrar o sistema
         }

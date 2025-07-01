@@ -5,6 +5,7 @@ class Interface{
     private:
 
     public:
+    void Limpar_dados();
     void inicial();
     void Logar();
     void Cadastrar();
