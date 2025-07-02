@@ -2,9 +2,7 @@
 #include <iostream>
 #include "Interface.hpp"
 #include <string>
-#include "Cadastro.hpp"
-#include "Candidato.hpp"
-#include "Eleitor.hpp"
+#include "json_utils.hpp"
 using namespace std;
 void Interface::Limpar_dados(){
     system("clear || cls");
@@ -57,16 +55,16 @@ void Interface::inicial(){
         }
     }
     void Interface::Cadastrar() {
-        std::string nome, cpf, nasc;
+        std::string nome, cpf;
+        int idade;
         cout << "Bem-vindo ao cadastro de usuário!" << endl;
         cout << "Digite seu nome: "<< std::flush << endl;
         getline(cin >> std::ws, nome);
         cout << "Digite seu CPF: "<< std::flush << endl;
         getline(cin >> std::ws, cpf);
-        cout << "Digite sua data de nascimento (DD/MM/AAAA)(Sem /): "<< std::flush << endl;
-        getline(cin >> std::ws, nasc);
-        Cadastro Cadastro(nome, cpf, nasc);
-        Cadastro.mostrar_dados();
+        cout << "Digite sua idade: "<< std::flush << endl;
+        cin >> idade;
+        Cadastro Cadastro(nome, cpf, idade, ""); // O número do eleitor pode ser gerado ou solicitado posteriormente
         cout << endl;
         // Aqui você pode adicionar o código para cadastrar o usuário
     }
