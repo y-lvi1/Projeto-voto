@@ -19,9 +19,9 @@ void Candidato::setCargo(const std::string cargo) { this->cargo_disputado = carg
 void Candidato::registrar_voto() { votos++; }
 
 void Candidato::mostrar_dados() const {
-    std::cout << "Nome de urna: " << nome_urna << "\n"
+    std::cout << "Nome do candidato: " << nome_urna << "\n"
               << "Partido: " << partido << "\n"
               << "Cargo: " << cargo_disputado << "\n"
-              << "Número: " << numero_candidato << "\n"
+              << "Numero: " << numero_candidato << "\n"
               << "Votos: " << votos << "\n";
 }
