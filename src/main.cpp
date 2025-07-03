@@ -1,9 +1,16 @@
 #include "Security.hpp"
 #include <iostream>
-
+#include "interface.hpp"
 int main()
 {
+    srand(time(nullptr));
+    while (1)
+    {
+        Interface interface;
+        interface.inicial();
+    }
     //*EXEMPLO DE USO DA CLASSE SECURITY*//
+
     /*
     Security security;
     while (1)

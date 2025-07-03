@@ -7,7 +7,6 @@ class Security{
     private:
 
     std::string hash_loaded;
-    
 
     public:
 
