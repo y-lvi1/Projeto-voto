@@ -60,6 +60,11 @@ bool Interface::Logar(vector<Eleitor> &eleitores)
     {
         if (eleitor.getNome() == nome && eleitor.getCpf() == cpf)
         {
+            if(eleitor.jaVotou()){
+                Limpar_dados();
+                cout << "Voce ja votou!" << endl;
+                return false; // Interrompe o login se o eleitor já votou
+            }
             cout << "Login realizado com sucesso!" << endl;
             // Aqui você pode adicionar o código para logar o usuário
             return true; // Interrompe o login
@@ -77,6 +82,23 @@ void Interface::Voto()
     cout << "Bem-vindo ao sistema de votação!" << endl;
     cout << "1. Votar" << endl;
     cout << "2. Vizualizar Lista de Candidatos" << endl;
+    cout << "3. Voltar ao menu principal" << endl;
+    int opcao;
+    cin >> opcao;
+    switch (opcao){
+    case 1:
+        cout << "Iniciando votação..." << endl;
+        break;
+    case 2:
+        cout << "Exibindo lista de candidatos..." << endl;
+        break;
+    case 3:
+        cout << "Voltando ao menu principal..." << endl;
+        break;
+    default:
+        cout << "Opção inválida!" << endl;
+        break;
+    }
     // Aqui você pode adicionar o código para realizar a votação
     // Por exemplo, exibir candidatos, permitir que o usuário vote, etc.
     cout << "Votação realizada com sucesso!" << endl;
