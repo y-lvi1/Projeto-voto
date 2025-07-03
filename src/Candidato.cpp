@@ -10,11 +10,13 @@ std::string Candidato::getNomeUrna() const { return nome_urna; }
 std::string Candidato::getPartido() const { return partido; }
 std::string Candidato::getCargo() const { return cargo_disputado; }
 int Candidato::getNumero() const { return numero_candidato; }
+int Candidato::getVotos() const { return votos; }
 
 void Candidato::setNome(const std::string nome) { this->nome = nome; }
 void Candidato::setNumero(int numero) { this->numero_candidato = numero; }
 void Candidato::setPartido(const std::string partido) { this->partido = partido; }
 void Candidato::setCargo(const std::string cargo) { this->cargo_disputado = cargo; }
+void Candidato::setVotos(int votos){this->votos = votos;}
 
 void Candidato::registrar_voto() { votos++; }
 

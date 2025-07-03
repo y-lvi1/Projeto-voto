@@ -39,6 +39,12 @@
         "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
+<<<<<<< HEAD
         "typeinfo": "cpp"
+=======
+        "typeinfo": "cpp",
+        "chrono": "cpp",
+        "iomanip": "cpp"
+>>>>>>> origin/Jadiel-Segurança
     }
 }

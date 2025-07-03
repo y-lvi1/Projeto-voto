@@ -7,8 +7,11 @@ class Security{
     private:
 
     std::string hash_loaded;
+    
 
     public:
+
+    bool arquivo_aberto = true; 
 
     Security();
 
