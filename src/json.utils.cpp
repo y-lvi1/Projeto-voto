@@ -71,3 +71,18 @@ std::string gerar_titulo() {
     }
     return num;
 }
+
+void salvarCandidatos(const std::vector<Candidato>& candidatos) {
+    json j_array = candidatos;
+    std::ofstream arquivo("candidatos.json");
+    arquivo << j_array.dump(4);
+}
+
+std::vector<Candidato> carregarCandidatos() {
+    std::ifstream arquivo("candidatos.json");
+    if (!arquivo.is_open()) return {};
+    json j;
+    arquivo >> j;
+    if (j.empty() || !j.is_array()) return {};
+    return j.get<std::vector<Candidato>>();
+}
