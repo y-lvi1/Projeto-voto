@@ -3,12 +3,14 @@
 #include "interface.hpp"
 int main()
 {
-    while(1){
-    Interface interface;
-    interface.inicial();
+    srand(time(nullptr));
+    while (1)
+    {
+        Interface interface;
+        interface.inicial();
     }
     //*EXEMPLO DE USO DA CLASSE SECURITY*//
-    
+
     /*
     Security security;
     while (1)
