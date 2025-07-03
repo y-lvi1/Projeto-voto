@@ -30,8 +30,10 @@ void Interface::inicial()
     case 2:
         Limpar_dados();
         if(Logar(eleitores)){
+            Limpar_dados();
             Voto();
         }
+        Limpar_dados();
         break;
     case 3:
         Limpar_dados();
@@ -67,10 +69,14 @@ bool Interface::Logar(vector<Eleitor> &eleitores)
             return false;
         }
     }
+    cout << "Eleitor nao encontrado." << endl;
+    return false; // Retorna falso se o eleitor não for encontrado
 }
 void Interface::Voto()
 {
     cout << "Bem-vindo ao sistema de votação!" << endl;
+    cout << "1. Votar" << endl;
+    cout << "2. Vizualizar Lista de Candidatos" << endl;
     // Aqui você pode adicionar o código para realizar a votação
     // Por exemplo, exibir candidatos, permitir que o usuário vote, etc.
     cout << "Votação realizada com sucesso!" << endl;
