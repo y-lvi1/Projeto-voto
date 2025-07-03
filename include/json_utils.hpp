@@ -21,4 +21,7 @@ std::vector<Eleitor> carregarEleitores();
 
 std::string gerar_titulo();
 
+void salvarCandidatos(const std::vector<Candidato>& candidatos);
+std::vector<Candidato> carregarCandidatos();
+
 #endif

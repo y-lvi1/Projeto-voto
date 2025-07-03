@@ -12,6 +12,7 @@ void Interface::Limpar_dados()
 void Interface::inicial()
 {
     vector<Eleitor> eleitores = carregarEleitores();
+
     int opcao = 0;
     cout << "Bem vindo ao sistema de votacao brasileiro!" << endl;
     cout << "" << endl;
@@ -29,7 +30,8 @@ void Interface::inicial()
         break;
     case 2:
         Limpar_dados();
-        if(Logar(eleitores)){
+        if (Logar(eleitores))
+        {
             Limpar_dados();
             Voto();
         }
@@ -63,7 +65,9 @@ bool Interface::Logar(vector<Eleitor> &eleitores)
             cout << "Login realizado com sucesso!" << endl;
             // Aqui você pode adicionar o código para logar o usuário
             return true; // Interrompe o login
-        }else{
+        }
+        else
+        {
             cout << "Login falhou. Verifique seu nome e CPF." << endl;
             // Aqui você pode adicionar o código para tratar o caso de login falho
             return false;
@@ -121,6 +125,9 @@ void Interface::ADM()
 {
     Security security;
     string senha;
+
+    cout << "Digite a senha do administrador: ";
+
     if (security.autenticate_admin())
     {
         cout << "Bem-vindo, administrador!" << endl;
@@ -133,19 +140,50 @@ void Interface::ADM()
 }
 void Interface::administrando()
 {
+    vector<Candidato> candidatos = carregarCandidatos();
+
     int Adm_opcao;
-    string nome, cpf, nasc, nome_urna, partido, cargo;
+    cout << "Bem-vindo ao menu de administração!" << endl;
     cout << "1. Cadastrar Candidato" << endl;
-    cout << "2. Deletar Candidatos" << endl;
+    cout << "2. Deletar Candidato" << endl;
     cin >> Adm_opcao;
     switch (Adm_opcao)
     {
     case 1:
-        cout << "Cadastrar Candidato" << endl;
+        cadastrarCandidato(candidatos);
         break;
     case 2:
         cout << "Deletar Candidatos" << endl;
         break;
         // Aqui você pode adicionar o código para administrar o sistema
     }
+}
+
+void Interface::cadastrarCandidato(vector<Candidato> &candidatos)
+{
+    string nome, cpf, num_eleitor, nome_urna, partido, cargo;
+    int idade, numero_candidato;
+    cout << "Cadastrar Candidato" << endl;
+    cout << "Digite o nome do candidato: ";
+    getline(cin >> std::ws, nome);
+    cout << "Digite o CPF do candidato: ";
+    getline(cin >> std::ws, cpf);
+    cout << "Digite a idade do candidato: ";
+    cin >> idade;
+    cout << "Digite o numero de eleitor do candidato: ";
+    getline(cin >> std::ws, num_eleitor);
+    cout << "Digite o numero do candidato: ";
+    cin >> numero_candidato;
+    cout << "Digite o nome de urna do candidato: ";
+    getline(cin >> std::ws, nome_urna);
+    cout << "Digite o partido do candidato: ";
+    getline(cin >> std::ws, partido);
+    cout << "Digite o cargo disputado pelo candidato: ";
+    getline(cin >> std::ws, cargo);
+
+    Candidato c1(nome, cpf, idade, num_eleitor, numero_candidato, nome_urna, partido, cargo);
+    candidatos.push_back(c1);
+    salvarCandidatos(candidatos);
+
+    cout << "Candidato cadastrado com sucesso!" << endl;
 }
