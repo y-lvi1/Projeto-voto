@@ -9,13 +9,14 @@ class Interface
 {
 private:
 public:
-    void Voto();
-    void Limpar_dados();
+    void votando();
+    void voto();
+    void limpar_dados();
     void inicial();
-    bool Logar(std::vector<Eleitor> &eleitores);
-    void Cadastrar(std::vector<Eleitor> &eleitores);
-    void Resultado();
-    void ADM();
+    bool logar(std::vector<Eleitor> &eleitores);
+    void cadastrar_eleitor(std::vector<Eleitor> &eleitores);
+    void resultado();
+    void adm();
     void administrando();
     void cadastrarCandidato(std::vector<Candidato> &candidatos);
 };

@@ -6,7 +6,7 @@ void to_json(json& j, const Eleitor& e) {
         {"cpf", e.getCpf()},
         {"idade", e.getIdade()},
         {"num_eleitor", e.getNumEleitor()},
-        {"votou", e.jaVotou()}
+        {"votou", e.getVotou()}
     };
 }
 
@@ -29,7 +29,7 @@ void to_json(json& j, const Candidato& c) {
         {"nome_urna", c.getNomeUrna()},
         {"partido", c.getPartido()},
         {"cargo", c.getCargo()},
-        {"votos", c.votos}
+        {"votos", c.getVotos()}
     };
 }
 
@@ -45,7 +45,7 @@ void from_json(const json& j, Candidato& c) {
     int votos = j.at("votos").get<int>();
 
     c = Candidato(nome, cpf, idade, num_eleitor, numero, nome_urna, partido, cargo);
-    c.votos = votos;
+    c.setVotos(votos);
 }
 
 void salvarEleitores(const std::vector<Eleitor>& eleitores) {
