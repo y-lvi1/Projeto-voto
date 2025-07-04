@@ -93,24 +93,6 @@ void Interface::voto()
     cout << "Bem-vindo ao sistema de votação!" << endl;
     cout << "1. Votar" << endl;
     cout << "2. Vizualizar Lista de Candidatos" << endl;
-<<<<<<< HEAD
-    cout << "3. Voltar ao menu principal" << endl;
-    int opcao;
-    cin >> opcao;
-    switch (opcao){
-    case 1:
-        cout << "Iniciando votação..." << endl;
-        break;
-    case 2:
-        cout << "Exibindo lista de candidatos..." << endl;
-        break;
-    case 3:
-        cout << "Voltando ao menu principal..." << endl;
-        break;
-    default:
-        cout << "Opção inválida!" << endl;
-        break;
-=======
     cin >> std::ws;
     cin >> opcao;
     switch (opcao)
