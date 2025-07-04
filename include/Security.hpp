@@ -10,6 +10,8 @@ class Security{
 
     public:
 
+    bool arquivo_aberto = true; 
+
     Security();
 
     bool autenticate_admin();

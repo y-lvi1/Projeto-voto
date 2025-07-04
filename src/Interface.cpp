@@ -4,15 +4,21 @@
 #include <string>
 #include "json_utils.hpp"
 #include "Eleitor.hpp"
+
 using namespace std;
-void Interface::Limpar_dados()
+
+std::string sessao_atual;
+
+void Interface::limpar_dados()
 {
     system("clear || cls");
 }
 void Interface::inicial()
 {
     vector<Eleitor> eleitores = carregarEleitores();
+
     int opcao = 0;
+
     cout << "Bem vindo ao sistema de votacao brasileiro!" << endl;
     cout << "" << endl;
     cout << "" << endl;
@@ -24,24 +30,25 @@ void Interface::inicial()
     switch (opcao)
     {
     case 1:
-        Limpar_dados();
-        Cadastrar(eleitores);
+        limpar_dados();
+        cadastrar_eleitor(eleitores);
         break;
     case 2:
-        Limpar_dados();
-        if(Logar(eleitores)){
-            Limpar_dados();
-            Voto();
+        limpar_dados();
+        if (logar(eleitores))
+        {
+            limpar_dados();
+            voto();
         }
-        Limpar_dados();
+        limpar_dados();
         break;
     case 3:
-        Limpar_dados();
-        Resultado();
+        limpar_dados();
+        resultado();
         break;
     case 4:
-        Limpar_dados();
-        ADM();
+        limpar_dados();
+        adm();
         break;
     default:
         cout << "Opcao invalida!" << endl;
@@ -49,7 +56,7 @@ void Interface::inicial()
         // Código se nenhuma das opções anteriores combinar
     }
 }
-bool Interface::Logar(vector<Eleitor> &eleitores)
+bool Interface::logar(vector<Eleitor> &eleitores)
 {
     string nome, cpf;
     cout << "Insira nome" << endl;
@@ -66,22 +73,27 @@ bool Interface::Logar(vector<Eleitor> &eleitores)
                 return false; // Interrompe o login se o eleitor já votou
             }
             cout << "Login realizado com sucesso!" << endl;
+            sessao_atual = eleitor.getNumEleitor();
             // Aqui você pode adicionar o código para logar o usuário
             return true; // Interrompe o login
-        }else{
-            cout << "Login falhou. Verifique seu nome e CPF." << endl;
+        }
+        else
+        {
             // Aqui você pode adicionar o código para tratar o caso de login falho
-            return false;
+            continue;
         }
     }
-    cout << "Eleitor nao encontrado." << endl;
+    cout << "Login falhou. Verifique seu nome e CPF." << endl;
     return false; // Retorna falso se o eleitor não for encontrado
 }
-void Interface::Voto()
+void Interface::voto()
 {
+    int opcao;
+
     cout << "Bem-vindo ao sistema de votação!" << endl;
     cout << "1. Votar" << endl;
     cout << "2. Vizualizar Lista de Candidatos" << endl;
+<<<<<<< HEAD
     cout << "3. Voltar ao menu principal" << endl;
     int opcao;
     cin >> opcao;
@@ -98,12 +110,95 @@ void Interface::Voto()
     default:
         cout << "Opção inválida!" << endl;
         break;
+=======
+    cin >> std::ws;
+    cin >> opcao;
+    switch (opcao)
+    {
+        case 1:
+            votando();
+            break;
+        case 2:
+            // Código para visualizar a lista de candidatos
+            break;
+        default:
+            cout << "Opção inválida!" << endl;
+            break;
+>>>>>>> Yago-Interface
     }
     // Aqui você pode adicionar o código para realizar a votação
     // Por exemplo, exibir candidatos, permitir que o usuário vote, etc.
     cout << "Votação realizada com sucesso!" << endl;
 }
-void Interface::Cadastrar(vector<Eleitor> &eleitores)
+void Interface::votando()
+{
+    int numero_voto;
+
+    vector<Candidato> candidatos = carregarCandidatos();
+    vector<Eleitor> eleitores = carregarEleitores();
+
+    if (candidatos.empty())
+    {
+        cout << "Nenhum candidato cadastrado." << endl;
+        return;
+    }
+    if (eleitores.empty())
+    {
+        cout << "Nenhum eleitor cadastrado." << endl;
+        return;
+    }
+
+    cout << "Digite o numero do candidato que deseja votar: "<< std::flush << endl;
+    cin >> numero_voto;
+
+    for (auto &candidato : candidatos)
+    {
+        if (candidato.getNumero() == numero_voto)
+        {
+            // Verifica se o eleitor já votou
+            for (auto &eleitor : eleitores)
+            {
+                if (eleitor.getNumEleitor() == sessao_atual)
+                {
+                    eleitor.setVotou(true); // Marca o eleitor como tendo votado
+                    salvarEleitores(eleitores); // Salva a alteração no arquivo
+                    cout << "Eleitor " << eleitor.getNome() << " votou no candidato ";
+                    return;
+                }
+            }
+            // Registra o voto
+            //candidato.registrar_voto();
+            cout << "Voto registrado com sucesso!" << endl;
+            return;
+        }
+    }
+    
+    /*cout << "Lista de Candidatos:" << endl;
+    for (const auto &candidato : candidatos)
+    {
+        cout << "Nome: " << candidato.getNome() << ", Numero: " << candidato.getNumero() << ", Partido: " << candidato.getPartido() << endl;
+    }
+    int numero_voto;
+    cout << "Digite o numero do candidato que deseja votar: ";
+    cin >> numero_voto;
+
+    bool voto_valido = false;
+    for (auto &candidato : candidatos)
+    {
+        if (candidato.getNumero() == numero_voto)
+        {
+            candidato.registrar_voto();
+            voto_valido = true;
+            cout << "Voto registrado com sucesso!" << endl;
+            break;
+        }
+    }
+    if (!voto_valido)
+    {
+        cout << "Voto invalido. Tente novamente." << endl;
+    }*/
+}
+void Interface::cadastrar_eleitor(vector<Eleitor> &eleitores)
 {
     string nome, cpf, num_eleitor;
     int idade;
@@ -134,15 +229,18 @@ void Interface::Cadastrar(vector<Eleitor> &eleitores)
     cout << "Cadastro realizado com sucesso!" << endl;
     // Aqui você pode adicionar o código para cadastrar o usuário
 }
-void Interface::Resultado()
+void Interface::resultado()
 {
     cout << "Exibindo resultados das eleições..." << endl;
     // Aqui você pode adicionar o código para exibir os resultados das eleições
 }
-void Interface::ADM()
+void Interface::adm()
 {
     Security security;
     string senha;
+
+    cout << "Digite a senha do administrador: ";
+
     if (security.autenticate_admin())
     {
         cout << "Bem-vindo, administrador!" << endl;
@@ -155,19 +253,50 @@ void Interface::ADM()
 }
 void Interface::administrando()
 {
+    vector<Candidato> candidatos = carregarCandidatos();
+
     int Adm_opcao;
-    string nome, cpf, nasc, nome_urna, partido, cargo;
+    cout << "Bem-vindo ao menu de administração!" << endl;
     cout << "1. Cadastrar Candidato" << endl;
-    cout << "2. Deletar Candidatos" << endl;
+    cout << "2. Deletar Candidato" << endl;
     cin >> Adm_opcao;
     switch (Adm_opcao)
     {
     case 1:
-        cout << "Cadastrar Candidato" << endl;
+        cadastrarCandidato(candidatos);
         break;
     case 2:
         cout << "Deletar Candidatos" << endl;
         break;
         // Aqui você pode adicionar o código para administrar o sistema
     }
+}
+
+void Interface::cadastrarCandidato(vector<Candidato> &candidatos)
+{
+    string nome, cpf, num_eleitor, nome_urna, partido, cargo;
+    int idade, numero_candidato;
+    cout << "Cadastrar Candidato" << endl;
+    cout << "Digite o nome do candidato: ";
+    getline(cin >> std::ws, nome);
+    cout << "Digite o CPF do candidato: ";
+    getline(cin >> std::ws, cpf);
+    cout << "Digite a idade do candidato: ";
+    cin >> idade;
+    cout << "Digite o numero de eleitor do candidato: ";
+    getline(cin >> std::ws, num_eleitor);
+    cout << "Digite o numero do candidato: ";
+    cin >> numero_candidato;
+    cout << "Digite o nome de urna do candidato: ";
+    getline(cin >> std::ws, nome_urna);
+    cout << "Digite o partido do candidato: ";
+    getline(cin >> std::ws, partido);
+    cout << "Digite o cargo disputado pelo candidato: ";
+    getline(cin >> std::ws, cargo);
+
+    Candidato c1(nome, cpf, idade, num_eleitor, numero_candidato, nome_urna, partido, cargo);
+    candidatos.push_back(c1);
+    salvarCandidatos(candidatos);
+
+    cout << "Candidato cadastrado com sucesso!" << endl;
 }

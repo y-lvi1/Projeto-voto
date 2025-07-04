@@ -1,19 +1,24 @@
 #ifndef INTERFACE_HPP
 #define INTERFACE_HPP
+
 #include <vector>
 #include "Eleitor.hpp"
-class Interface{
-    private:
+#include "Candidato.hpp"
 
-    public:
-    void Voto();
-    void Limpar_dados();
+class Interface
+{
+private:
+public:
+    void votando();
+    void voto();
+    void limpar_dados();
     void inicial();
-    bool Logar(std::vector<Eleitor> &eleitores);
-    void Cadastrar(std::vector<Eleitor>& eleitores);
-    void Resultado();
-    void ADM();
+    bool logar(std::vector<Eleitor> &eleitores);
+    void cadastrar_eleitor(std::vector<Eleitor> &eleitores);
+    void resultado();
+    void adm();
     void administrando();
+    void cadastrarCandidato(std::vector<Candidato> &candidatos);
 };
 
 #endif // INTERFACE_HPP
