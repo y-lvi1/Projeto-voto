@@ -63,12 +63,12 @@ bool Interface::logar(vector<Eleitor> &eleitores)
     getline(cin >> std::ws, nome);
     cout << "Insira CPF" << endl;
     getline(cin >> std::ws, cpf);
-    for (const auto &eleitor : eleitores)
+    for (auto &eleitor : eleitores)
     {
         if (eleitor.getNome() == nome && eleitor.getCpf() == cpf)
         {
-            if(eleitor.jaVotou()){
-                Limpar_dados();
+            if(eleitor.getVotou()){
+                limpar_dados();
                 cout << "Voce ja votou!" << endl;
                 return false; // Interrompe o login se o eleitor já votou
             }
@@ -106,7 +106,6 @@ void Interface::voto()
         default:
             cout << "Opção inválida!" << endl;
             break;
->>>>>>> Yago-Interface
     }
     // Aqui você pode adicionar o código para realizar a votação
     // Por exemplo, exibir candidatos, permitir que o usuário vote, etc.
