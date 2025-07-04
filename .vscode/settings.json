@@ -40,6 +40,10 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
+<<<<<<< HEAD
+        "chrono": "cpp",
+        "iomanip": "cpp"
+=======
         "any": "cpp",
         "bit": "cpp",
         "charconv": "cpp",
@@ -63,5 +67,6 @@
         "cinttypes": "cpp",
         "valarray": "cpp",
         "variant": "cpp"
+>>>>>>> origin/Teste
     }
 }
