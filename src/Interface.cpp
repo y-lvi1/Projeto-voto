@@ -144,11 +144,12 @@ void Interface::votando()
                     eleitor.setVotou(true); // Marca o eleitor como tendo votado
                     salvarEleitores(eleitores); // Salva a alteração no arquivo
                     cout << "Eleitor " << eleitor.getNome() << " votou no candidato ";
-                    return;
+                    cout << candidato.getNomeUrna() << " do partido " << candidato.getPartido() << endl;
+                    break;
                 }
-            }
-            // Registra o voto
-            //candidato.registrar_voto();
+            } // Salva a alteração no arquivo
+            candidato.registrar_voto();
+            salvarCandidatos(candidatos);
             cout << "Voto registrado com sucesso!" << endl;
             return;
         }
