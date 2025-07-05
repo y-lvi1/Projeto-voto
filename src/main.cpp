@@ -1,6 +1,7 @@
 #include "Security.hpp"
 #include <iostream>
 #include "interface.hpp"
+#include <ctime>
 int main()
 {
     srand(time(nullptr));

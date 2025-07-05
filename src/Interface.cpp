@@ -81,22 +81,35 @@ bool Interface::logar(vector<Eleitor> &eleitores)
     cout << "Login falhou. Verifique seu nome e CPF." << endl;
     return false; // Retorna falso se o eleitor não for encontrado
 }
+void Interface::dados_logados(const std::vector<Eleitor> &eleitores, const std::string &sessao_atual){
+    for(const auto &eleitor : eleitores){
+        if(eleitor.getNumEleitor() == sessao_atual){
+            cout << "Nome: " << eleitor.getNome() << endl;
+            cout << "Titulo de eleitor: " << eleitor.getNumEleitor() << endl;
+        }
+    }
+}
 void Interface::voto()
-{
-    int opcao;
 
+{
+    int opcao_voto;
     cout << "Bem-vindo ao sistema de votação!" << endl;
+    dados_logados(carregarEleitores(), sessao_atual);
+    cout << endl;
     cout << "1. Votar" << endl;
     cout << "2. Vizualizar Lista de Candidatos" << endl;
     cin >> std::ws;
-    cin >> opcao;
-    switch (opcao)
+    cin >> opcao_voto;
+    switch (opcao_voto)
     {
         case 1:
+            limpar_dados();
+            // Vote aqui
             votando();
             break;
         case 2:
-            // Código para visualizar a lista de candidatos
+        limpar_dados();
+        mostrar_candidatos(carregarCandidatos());
             break;
         default:
             cout << "Opção inválida!" << endl;
@@ -105,6 +118,52 @@ void Interface::voto()
     // Aqui você pode adicionar o código para realizar a votação
     // Por exemplo, exibir candidatos, permitir que o usuário vote, etc.
     cout << "Votação realizada com sucesso!" << endl;
+}
+void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
+{
+    cout << "1.Listar por cargo" << endl;
+    cout << "2.Listar por partido" << endl;
+    cout << "3.Listar todos os candidatos" << endl;
+    int opcao;
+    string cargo;
+    string partido;
+    cin >> opcao;
+    switch(opcao){
+        case 1:
+        cout << "Digite o cargo que deseja listar: " << std::flush << endl;
+        cin >> cargo;
+        for(const auto &candidato : candidatos)
+        {
+            if(candidato.getCargo() == cargo)
+            {
+                candidato.mostrar_dados();
+                cout << endl;
+            }
+        }
+        system("pause");
+        break;
+        case 2:
+        cout << "Digite o partido que deseja listar: " << std::flush << endl;
+        cin >> partido;
+        for(const auto &candidato : candidatos)
+        {
+            if (candidato.getPartido() == partido)
+            {
+                candidato.mostrar_dados();
+                cout << endl;
+            }
+        }
+        system("pause");
+        break;
+        case 3:
+        cout << "Lista de todos os candidatos disponiveis: " << std::flush << endl;
+        for(const auto &candidato : candidatos){
+            candidato.mostrar_dados();
+            cout << endl;
+            system("pause");
+        }
+    }
+
 }
 void Interface::votando()
 {
