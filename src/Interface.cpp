@@ -139,20 +139,46 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
     cout << "2.Listar por partido" << endl;
     cout << "3.Listar todos os candidatos" << endl;
     int opcao;
-    string cargo;
+    int cargo;
     string partido;
     cin >> opcao;
     switch(opcao){
         case 1:
         limpar_dados();
         cout << "Digite o cargo que deseja listar: " << std::flush << endl;
+        cout << "1. Presidente" << endl;
+        cout << "2. Governador" << endl;
+        cout << "3.Sair" << endl;
         cin >> cargo;
         for(const auto &candidato : candidatos)
         {
-            if(candidato.getCargo() == cargo)
+            switch ((cargo))
             {
-                candidato.mostrar_dados();
-                cout << endl;
+            case 1:
+                if (candidato.getCargo() == "Presidente" || candidato.getCargo() == "presidente")
+                {
+                    candidato.mostrar_dados();
+                    cout << endl;
+                }
+                break;
+            case 2:
+                if (candidato.getCargo() == "Governador" || candidato.getCargo() == "governador")
+                {
+                    candidato.mostrar_dados();
+                    cout << endl;
+                }
+                break;
+            case 3:
+                cout << "Retornando ao menu de votacao" << endl;
+                system("pause");
+                limpar_dados();
+                voto();
+                return;
+            default:
+            cout << "Opção inválida!" << endl;
+            system("pause");
+            limpar_dados();
+                break;
             }
         }
         system("pause");
