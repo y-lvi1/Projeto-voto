@@ -24,6 +24,5 @@ void Candidato::mostrar_dados() const {
     std::cout << "Nome de urna: " << nome_urna << "\n"
               << "Partido: " << partido << "\n"
               << "Cargo: " << cargo_disputado << "\n"
-              << "Número: " << numero_candidato << "\n"
-              << "Votos: " << votos << "\n";
+              << "Número: " << numero_candidato << "\n";
 }

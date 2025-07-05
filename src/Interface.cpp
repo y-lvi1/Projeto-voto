@@ -150,23 +150,32 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
         cout << "2. Governador" << endl;
         cout << "3.Sair" << endl;
         cin >> cargo;
-        for(const auto &candidato : candidatos)
-        {
-            switch ((cargo))
+        limpar_dados();
+        switch ((cargo))
             {
             case 1:
+            for(const auto &candidato : candidatos){
                 if (candidato.getCargo() == "Presidente" || candidato.getCargo() == "presidente")
                 {
                     candidato.mostrar_dados();
                     cout << endl;
                 }
+            }
+                system("pause");
+                limpar_dados();
+                voto();
                 break;
             case 2:
+            for(const auto &candidato : candidatos){
                 if (candidato.getCargo() == "Governador" || candidato.getCargo() == "governador")
                 {
                     candidato.mostrar_dados();
                     cout << endl;
                 }
+            }
+                system("pause");
+                limpar_dados();
+                voto();
                 break;
             case 3:
                 cout << "Retornando ao menu de votacao" << endl;
@@ -180,7 +189,7 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
             limpar_dados();
                 break;
             }
-        }
+        
         system("pause");
         break;
         case 2:
@@ -199,12 +208,36 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
         break;
         case 3:
         limpar_dados();
-        cout << "Lista de todos os candidatos disponiveis: " << std::flush << endl;
+        cout << "Lista de todos os candidatos disponiveis. " << std::flush << endl;
+        cout << "Presidentes:" << endl << endl;
         for(const auto &candidato : candidatos){
-            candidato.mostrar_dados();
+            if(candidato.getCargo() == "Presidente" || candidato.getCargo() == "presidente"){
+                candidato.mostrar_dados();
+                cout << endl;
+            }
+        }
+            cout << "Governadores:" << endl << endl;
+            for(const auto &candidato : candidatos){
+            if(candidato.getCargo() == "Governador" || candidato.getCargo() == "governador"){
+                candidato.mostrar_dados();
+                cout << endl;
+            }
+        }
+        if(candidatos.empty()){
+            cout << "Nenhum candidato cadastrado." << endl;
+        }
             cout << endl;
             system("pause");
-        }
+            limpar_dados();
+            voto();
+
+        break;
+        default:
+        cout << "Opcao invalida" << endl;
+        system("pause");
+        limpar_dados();
+        voto();
+        return;
     }
 
 }
@@ -379,18 +412,30 @@ void Interface::administrando()
 
     int Adm_opcao;
     cout << "Bem-vindo ao menu de administração!" << endl;
+    cout <<"Digite uma opção:" << endl << endl;
     cout << "1. Cadastrar Candidato" << endl;
     cout << "2. Deletar Candidato" << endl;
+    cout << "3. Sair" << endl;
     cin >> Adm_opcao;
     switch (Adm_opcao)
     {
     case 1:
+    limpar_dados();
         cadastrarCandidato(candidatos);
+        system("pause");
+        limpar_dados();
+        administrando();
         break;
     case 2:
         cout << "Deletar Candidatos" << endl;
         break;
         // Aqui você pode adicionar o código para administrar o sistema
+    case 3:
+        cout << "Retornando ao menu inicial..." << endl;
+        system("pause");
+        limpar_dados();
+        inicial();
+        break;
     }
 }
 
