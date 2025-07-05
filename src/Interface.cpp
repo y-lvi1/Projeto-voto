@@ -213,14 +213,20 @@ void Interface::votando()
             for (auto &eleitor : eleitores)
             {if (eleitor.getNumEleitor() == sessao_atual)
                 {
-                     if(eleitor.getVotou() == true){
-                    cout << "Você já votou!" << endl;
-                    system("pause");
-                    limpar_dados();
-                    voto();
-                    return;
-                } // Salva a alteração no arquivo
-            candidato.mostrar_dados();
+                    if((candidato.getCargo() == "Presidente" || candidato.getCargo() == "presidente") && eleitor.getVotouPresidente() == true){
+                        cout << "Você já votou para presidente!" << endl;
+                        system("pause");
+                        limpar_dados();
+                        voto();
+                        return;
+                    } if((candidato.getCargo() == "Governador" || candidato.getCargo() == "governador") && eleitor.getVotouGovernador() == true){
+                        cout << "Você já votou para governador!" << endl;
+                        system("pause");
+                        limpar_dados();
+                        voto();
+                        return;
+                    }
+                    candidato.mostrar_dados();
             cout << endl;
             cout << "Confirmar voto?" << endl;
             cout << "1. Sim" << endl;
@@ -228,7 +234,11 @@ void Interface::votando()
             int confirmar;
             cin >> confirmar;
             if (confirmar == 1){
-                eleitor.setVotou(true);
+                if(candidato.getCargo() == "Presidente" || candidato.getCargo() == "presidente"){
+                    eleitor.setVotouPresidente(true);
+                } else if (candidato.getCargo() == "Governador" || candidato.getCargo() == "governador"){
+                    eleitor.setVotouGovernador(true);
+                }
                 salvarEleitores(eleitores);
                 candidato.registrar_voto();
                 salvarCandidatos(candidatos);
@@ -250,9 +260,10 @@ void Interface::votando()
             return;
                 }
             }
-                 
         }
-    }
+     }
+     }
+     // Salva a alteração no arquivo
     /*cout << "Lista de Candidatos:" << endl;
     for (const auto &candidato : candidatos)
     {
@@ -277,7 +288,7 @@ void Interface::votando()
     {
         cout << "Voto invalido. Tente novamente." << endl;
     }*/
-}
+
 void Interface::cadastrar_eleitor(vector<Eleitor> &eleitores)
 {
     string nome, cpf, num_eleitor;
@@ -303,7 +314,7 @@ void Interface::cadastrar_eleitor(vector<Eleitor> &eleitores)
         }
     }
     num_eleitor = gerar_titulo();
-    Eleitor e1(false, nome, cpf, idade, num_eleitor);
+    Eleitor e1(false, false, nome, cpf, idade, num_eleitor);
     eleitores.push_back(e1);
     salvarEleitores(eleitores);
     limpar_dados();

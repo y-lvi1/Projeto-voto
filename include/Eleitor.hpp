@@ -7,13 +7,16 @@ extern std::string sessao_atual;
 
 class Eleitor : public Cadastro {
 private:
-    bool votou;
+    bool votouPresidente;
+    bool votouGovernador;
 
 public:
     Eleitor();
-    Eleitor(bool votou, std::string nome, std::string cpf, int idade, std::string num_eleitor);
+    Eleitor(bool votouPresidente, bool votouGovernador, std::string nome, std::string cpf, int idade, std::string num_eleitor);
 
-    bool getVotou() const;
-    void setVotou(bool votou);
+    bool getVotouPresidente() const;
+    void setVotouPresidente(bool votou);
+    bool getVotouGovernador() const;
+    void setVotouGovernador(bool votou);
 };
 #endif

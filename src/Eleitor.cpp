@@ -2,10 +2,14 @@
 
 Eleitor::Eleitor() = default;
 
-Eleitor::Eleitor(bool votou, std::string nome, std::string cpf, int idade, std::string num_eleitor)
-    : Cadastro(nome, cpf, idade, num_eleitor), votou(votou) {}
+Eleitor::Eleitor(bool votouPresidente, bool votouGovernador, std::string nome, std::string cpf, int idade, std::string num_eleitor)
+    : Cadastro(nome, cpf, idade, num_eleitor), votouPresidente(votouPresidente), votouGovernador(votouGovernador) {}
 
-bool Eleitor::getVotou() const {
-    return votou;
+bool Eleitor::getVotouPresidente() const {
+    return votouPresidente;
 }
-void Eleitor::setVotou(bool votou){this->votou = votou;}
+bool Eleitor::getVotouGovernador() const {
+    return votouGovernador;
+}
+void Eleitor::setVotouPresidente(bool votou){this->votouPresidente = votou;}
+void Eleitor::setVotouGovernador(bool votou){this->votouGovernador = votou;}
