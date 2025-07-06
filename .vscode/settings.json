@@ -40,14 +40,11 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
-<<<<<<< HEAD
         "chrono": "cpp",
-        "iomanip": "cpp"
-=======
+        "iomanip": "cpp",
         "any": "cpp",
         "bit": "cpp",
         "charconv": "cpp",
-        "chrono": "cpp",
         "codecvt": "cpp",
         "compare": "cpp",
         "concepts": "cpp",
@@ -59,14 +56,11 @@
         "ratio": "cpp",
         "string_view": "cpp",
         "format": "cpp",
-        "iomanip": "cpp",
         "numbers": "cpp",
         "ranges": "cpp",
         "span": "cpp",
         "text_encoding": "cpp",
-        "cinttypes": "cpp",
         "valarray": "cpp",
         "variant": "cpp"
->>>>>>> origin/Teste
     }
 }

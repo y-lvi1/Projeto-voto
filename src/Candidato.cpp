@@ -21,9 +21,12 @@ void Candidato::setVotos(int votos){this->votos = votos;}
 void Candidato::registrar_voto() { votos++; }
 
 void Candidato::mostrar_dados() const {
-    std::cout << "Nome de urna: " << nome_urna << "\n"
+    std::cout << "╔═══════════════════════════════════════════════╗\n"
+              << "║ Dados do Candidato                            ║\n"
+              << "╚═══════════════════════════════════════════════╝\n"
+              << "Nome: " << nome_urna << "\n"
               << "Partido: " << partido << "\n"
+              << "Numero: " << numero_candidato << "\n"
               << "Cargo: " << cargo_disputado << "\n"
-              << "Número: " << numero_candidato << "\n"
-              << "Votos: " << votos << "\n";
+              << "________________________________________________\n";
 }

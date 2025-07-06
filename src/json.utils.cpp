@@ -6,7 +6,8 @@ void to_json(json& j, const Eleitor& e) {
         {"cpf", e.getCpf()},
         {"idade", e.getIdade()},
         {"num_eleitor", e.getNumEleitor()},
-        {"votou", e.getVotou()}
+        {"votou_presidente", e.getVotouPresidente()},
+        {"votou_governador", e.getVotouGovernador()}
     };
 }
 
@@ -15,8 +16,9 @@ void from_json(const json& j, Eleitor& e) {
     std::string cpf = j.at("cpf").get<std::string>();
     int idade = j.at("idade").get<int>();
     std::string num_eleitor = j.at("num_eleitor").get<std::string>();
-    bool votou = j.at("votou").get<bool>();
-    e = Eleitor(votou, nome, cpf, idade, num_eleitor);
+    bool votouPresidente = j.at("votou_presidente").get<bool>();
+    bool votouGovernador = j.at("votou_governador").get<bool>();
+    e = Eleitor(votouPresidente, votouGovernador, nome, cpf, idade, num_eleitor);
 }
 
 void to_json(json& j, const Candidato& c) {
