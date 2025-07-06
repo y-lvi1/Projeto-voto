@@ -420,11 +420,16 @@ void Interface::resultado_eleicoes()
             continue; // Ignora candidatos que não são presidentes
 
         double percentual = (static_cast<double>(candidato.getVotos()) / total_votos_presidente) * 100.0;
-
+        int Bar = static_cast<int>(percentual / 5);
+        string resultado;
+        for (int i = 0; i < Bar; i++) {
+        resultado += "#";
+    }
         cout << left << setw(25) << candidato.getNomeUrna()
              << setw(15) << candidato.getPartido()
              << setw(10) << candidato.getVotos()
              << percentual << "%" << endl;
+        cout << "[" << resultado << "]" << endl;
     }
 
     cout << "\n--- RESUMO DA VOTACAO ---\n"
@@ -462,12 +467,17 @@ void Interface::resultado_eleicoes()
         if (candidato.getCargo() != "Governador" && candidato.getCargo() != "governador")
             continue;
 
+        string resultado;  
         double percentual = (static_cast<double>(candidato.getVotos()) / total_votos_governador) * 100.0;
-
+        int Bar = static_cast<int>(percentual / 5);
+        for (int i = 0; i < Bar; i++) {
+        resultado += "#";
+    }
         cout << left << setw(25) << candidato.getNomeUrna()
              << setw(15) << candidato.getPartido()
              << setw(10) << candidato.getVotos()
              << percentual << "%" << endl;
+        cout << "[" << resultado << "]" << endl;
     }
 
     cout << "\n--- RESUMO DA VOTACAO ---\n"

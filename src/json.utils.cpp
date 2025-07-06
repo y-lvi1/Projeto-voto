@@ -16,8 +16,8 @@ void from_json(const json& j, Eleitor& e) {
     std::string cpf = j.at("cpf").get<std::string>();
     int idade = j.at("idade").get<int>();
     std::string num_eleitor = j.at("num_eleitor").get<std::string>();
-    bool votouPresidente = j.at("votou_presidente").get<bool>();
-    bool votouGovernador = j.at("votou_governador").get<bool>();
+    bool votouPresidente = j.value("votou_presidente", false);
+    bool votouGovernador = j.value("votou_governador", false);
     e = Eleitor(votouPresidente, votouGovernador, nome, cpf, idade, num_eleitor);
 }
 
