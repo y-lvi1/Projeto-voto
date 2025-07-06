@@ -22,22 +22,6 @@ Projeto desenvolvido utilizando a linguagem C++. Um sistema eleitoral simples qu
 
 - Yuri: Lógica do Sistema e Gerenciamento de Dados
 
-*Estruturação do Sistema:*  
-*Lógica da Votação:*  
-*Armazenamento em Arquivos:*   
-
 - Yago: Interface do Usuário (CLI) e Menu
   
-*Menus Interativos.*  
-
-*Interface Amigável.*  
-
-*Logins e cadastro de usuários no sistema*
-
-- Jadiel: Segurança e Funcionalidades Extras
-  
-  *Autenticação e administração.*
-  
-  *Tratamento de Erros.*
-  
-  *Lógica de resultado das eleições.*  
+- Jadiel: Segurança, autenticação e administração
