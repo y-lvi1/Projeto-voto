@@ -500,7 +500,7 @@ void Interface::votando()
                 {
                     if ((candidato.getCargo() == "Presidente" || candidato.getCargo() == "presidente") && eleitor.getVotouPresidente() == true)
                     {
-                        cout << "Você já votou para presidente!" << endl;
+                        cout << "Você já votou para presidente!" << endl << endl;
                         continue;
                     }
                     candidato.mostrar_dados();
@@ -523,7 +523,7 @@ void Interface::votando()
                         candidato.registrar_voto(); // Registra o voto do candidato
                         salvarCandidatos(candidatos); // Salva as alterações no arquivo JSON de candidatos
 
-                        cout << "Voto registrado com sucesso!" << endl;
+                        cout << "Voto registrado com sucesso!" << endl << endl;
                         break;
                     }
 
@@ -595,7 +595,7 @@ void Interface::votando()
                         salvarCandidatos(candidatos);
                         eleitor.setVotouGovernador(true);
                         salvarEleitores(eleitores); // Salva as alterações no arquivo JSON de eleitores
-                        cout << "Voto registrado com sucesso!" << endl;
+                        cout << "Voto registrado com sucesso!" << endl << endl;
                         system("pause");
                         limpar_dados();
                         voto();
