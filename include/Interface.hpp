@@ -17,10 +17,12 @@ public:
     void inicial();
     bool logar(std::vector<Eleitor> &eleitores);
     void cadastrar_eleitor(std::vector<Eleitor> &eleitores);
-    void resultado();
+    void resultado_eleicoes();
     void adm();
-    void administrando();
+    void menu_admin();
+    void listarCandidatos(const std::vector<Candidato> &candidatos) const;
     void cadastrarCandidato(std::vector<Candidato> &candidatos);
+    void deletarCandidato(std::vector<Candidato> &candidatos);
 };
 
 #endif // INTERFACE_HPP

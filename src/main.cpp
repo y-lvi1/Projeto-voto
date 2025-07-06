@@ -2,29 +2,25 @@
 #include <iostream>
 #include "interface.hpp"
 #include <ctime>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 int main()
 {
-    srand(time(nullptr));
-    while (1)
-    {
-        Interface interface;
-        interface.inicial();
-    }
-    //*EXEMPLO DE USO DA CLASSE SECURITY*//
+    #ifdef _WIN32
+        SetConsoleOutputCP(CP_UTF8);
+        SetConsoleCP(CP_UTF8);
+    #endif
 
-    /*
-    Security security;
+    srand(time(nullptr));
+    
     while (1)
     {
-        if (security.autenticate_admin())
-        {
-            std::cout << "Acesso concedido." << std::endl;
-        }
-        else
-        {
-            std::cout << "Acesso negado." << std::endl;
-        }
+        Interface i;
+        i.inicial();
     }
-    return 0;
-    */
+
+    return 0; //Apenas para evitar warning de retorno
 }

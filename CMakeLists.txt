@@ -4,6 +4,8 @@ project(UrnaEletronica VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
+add_compile_options(-fexec-charset=UTF-8 -finput-charset=UTF-8)
+
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_CXX_EXTENSIONS OFF)
