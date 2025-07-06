@@ -9,7 +9,7 @@ private:
     std::string nome_urna;
     std::string partido;
     std::string cargo_disputado;
-int votos = 0;
+    int votos = 0;
 public:
 
     Candidato();
@@ -26,8 +26,9 @@ public:
     void setNumero(int numero);
     void setPartido(const std::string partido);
     void setCargo(const std::string cargo);
-void setVotos(int votos);
+    void setVotos(int votos);
     void registrar_voto();
     void mostrar_dados() const;
 };
+
 #endif

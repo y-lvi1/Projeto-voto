@@ -17,6 +17,7 @@ public:
     void inicial();
     bool logar(std::vector<Eleitor> &eleitores);
     void cadastrar_eleitor(std::vector<Eleitor> &eleitores);
+    void exibirResultadosPorCargo(const std::string& cargo, const std::vector<Candidato>& todos_candidatos) const;
     void resultado_eleicoes();
     void adm();
     void menu_admin();
