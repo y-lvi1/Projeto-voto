@@ -17,3 +17,36 @@ Projeto desenvolvido utilizando a linguagem C++. Um sistema eleitoral simples qu
 - C++
 - CMake
 - Biblioteca `nlohmann/json` para manipulação de arquivos JSON
+
+## 🗂 Estrutura do Projeto
+├── include/              # Arquivos de cabeçalho (.hpp)
+├── src/                  # Implementações (.cpp)
+├── data/                 # Arquivos JSON (candidatos, eleitores, votos)
+├── main.cpp              # Arquivo principal
+└── CMakeLists.txt        # Configuração para build com CMake
+
+## 👥 Equipe
+
+- Yuri: Lógica do Sistema e Gerenciamento de Dados
+
+*Estruturação do Sistema:*  
+*Lógica da Votação:*  
+*Armazenamento em Arquivos:*   
+
+--------------------------------------------------------------------------------------
+
+- Yago: Interface do Usuário (CLI) e Menu
+- 
+*Menus Interativos.*  
+
+*Interface Amigável.*  
+
+ *Logins e cadastro de usuários no sistema*
+
+--------------------------------------------------------------------------------------
+
+- Jadiel: Segurança e Funcionalidades Extras
+  
+  *Autenticação e administração:
+  *Tratamento de Erros:*  
+   *Gerenciamento no esultado das eleições*  
