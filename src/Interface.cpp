@@ -231,6 +231,7 @@ void Interface::voto()
             cout << "Retornando ao menu inicial..." << endl;
             system("pause");
             limpar_dados();
+            inicial();
             return;
             break;
 
@@ -448,7 +449,7 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
 
 void Interface::votando()
 {
-    int numero_voto; // Variável para armazenar o número do candidato escolhido pelo eleitor
+    int numero_voto_presidente; // Variável para armazenar o número do candidato escolhido pelo eleitor
 
     vector<Candidato> candidatos = carregarCandidatos(); // Carrega os candidatos do arquivo JSON
     vector<Eleitor> eleitores = carregarEleitores(); // Carrega os eleitores do arquivo JSON
@@ -467,27 +468,32 @@ void Interface::votando()
         cout << "Nenhum eleitor cadastrado." << endl;
         return;
     }
-
-    cout << "Digite o número do candidato que deseja votar: " << std::flush << endl;
-    cin >> numero_voto;
+    cout << "╔═══════════════════════════════════════════════╗" << endl;
+    cout << "║ Votação                                       ║" << endl;
+    cout << "╚═══════════════════════════════════════════════╝" << endl << endl;
+    cout << "Digite o número do candidato para presidente: " << std::flush;
+    cin >> numero_voto_presidente;
 
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpa o buffer de entrada para evitar problemas com entradas subsequentes
 
     // Verifica se o número do voto é válido
     // Percorre a lista de candidatos e verifica se o número do voto corresponde ao número de algum candidato
-    if (numero_voto <= 0)
+    if (numero_voto_presidente <= 0)
     {
         cout << "Número de voto inválido. Por favor, tente novamente." << endl;
         system("pause");
         limpar_dados();
+        votando();
         return;
     }
 
     for (auto &candidato : candidatos)
     {
         // Se o número do voto corresponde ao número do candidato, verifica se o eleitor já votou para presidente ou governador
-        if (candidato.getNumero() == numero_voto)
+        if (candidato.getNumero() == numero_voto_presidente && (candidato.getCargo() == "Presidente" || candidato.getCargo() == "presidente"))
         {
+            // Verifica se o eleitor já votou para presidente
+            // Se o eleitor já votou, exibe uma mensagem informando que ele já votou e retorna ao menu de votação
             for (auto &eleitor : eleitores)
             {
                 if (eleitor.getNumEleitor() == sessao_atual)
@@ -495,64 +501,41 @@ void Interface::votando()
                     if ((candidato.getCargo() == "Presidente" || candidato.getCargo() == "presidente") && eleitor.getVotouPresidente() == true)
                     {
                         cout << "Você já votou para presidente!" << endl;
-                        system("pause");
-                        limpar_dados();
-                        break;
+                        continue;
                     }
-
-                    if ((candidato.getCargo() == "Governador" || candidato.getCargo() == "governador") && eleitor.getVotouGovernador() == true)
-                    {
-                        cout << "Você já votou para governador!" << endl;
-                        system("pause");
-                        limpar_dados();
-                        break;
-                    }
-
-                    // Se o eleitor não votou para o cargo do candidato, exibe os dados do candidato e pergunta se o eleitor deseja confirmar o voto
-
                     candidato.mostrar_dados();
                     cout << endl;
                     cout << "Confirmar voto?" << endl;
                     cout << "1. Sim" << endl;
                     cout << "2. Não" << endl;
 
-                    int confirmar;
+                    int confirmar_presidente;
 
-                    cin >> confirmar;
+                    cin >> confirmar_presidente;
 
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
                     // Se o eleitor confirmar o voto, registra o voto do candidato e atualiza o status de votação do eleitor
-                    if (confirmar == 1)
+                    if (confirmar_presidente == 1)
                     {
-                        if (candidato.getCargo() == "Presidente" || candidato.getCargo() == "presidente")
-                        {
-                            eleitor.setVotouPresidente(true);
-                        }
-                        else if (candidato.getCargo() == "Governador" || candidato.getCargo() == "governador")
-                        {
-                            eleitor.setVotouGovernador(true);
-                        }
-
+                        eleitor.setVotouPresidente(true);
                         salvarEleitores(eleitores); // Salva as alterações no arquivo JSON de eleitores
                         candidato.registrar_voto(); // Registra o voto do candidato
                         salvarCandidatos(candidatos); // Salva as alterações no arquivo JSON de candidatos
 
                         cout << "Voto registrado com sucesso!" << endl;
-                        cout << "Retornando ao menu de votação" << endl;
-
-                        system("pause");
-                        limpar_dados();
                         break;
                     }
 
                     // Se o eleitor não confirmar o voto, exibe uma mensagem de cancelamento e retorna ao menu de votação
-                    else if (confirmar == 2)
+                    else if (confirmar_presidente == 2)
                     {
                         cout << "Voto cancelado." << endl;
                         cout << "Retornando ao menu de votação" << endl;
                         system("pause");
                         limpar_dados();
+                        voto();
+                        return;
                         break;
                     }
                     return;
@@ -560,8 +543,78 @@ void Interface::votando()
             }
         }
     }
-}
+    cout << "Digite o número de candidato para governador: ";
+    int numero_voto_governador; // Variável para armazenar o número do candidato escolhido pelo eleitor para governador
+    cin >> numero_voto_governador;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpa o buffer de entrada para evitar problemas com entradas subsequentes
+    // Verifica se o número do voto é válido
+    if (numero_voto_governador <= 0)
+    {
+        cout << "Número de voto inválido. Por favor, tente novamente." << endl;
+        system("pause");
+        limpar_dados();
+        votando();
+        return;
+    }
+    for (auto &candidato : candidatos)
+    {
+        // Se o número do voto corresponde ao número do candidato, verifica se o eleitor já votou para governador
+        if (candidato.getNumero() == numero_voto_governador && (candidato.getCargo() == "Governador" || candidato.getCargo() == "governador"))
+        {
+            for (auto &eleitor : eleitores)
+            {
+                if (eleitor.getNumEleitor() == sessao_atual)
+                {
+                    if ((candidato.getCargo() == "Governador" || candidato.getCargo() == "governador") && eleitor.getVotouGovernador() == true)
+                    {
+                        cout << "Você já votou para governador!" << endl;
+                        system("pause");
+                        limpar_dados();
+                        voto();
+                        break;
+                    }
 
+                    // Se o eleitor não votou para o cargo do candidato, exibe os dados do candidato e pergunta se o eleitor deseja confirmar o voto
+                
+                    candidato.mostrar_dados();
+                    cout << endl;
+                    cout << "Confirmar voto?" << endl;
+                    cout << "1. Sim" << endl;
+                    cout << "2. Não" << endl;
+
+                    int confirmar_governador;
+
+                    cin >> confirmar_governador;
+
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+                    // Se o eleitor confirmar o voto, registra o voto do candidato e atualiza os dados do eleitor
+                    if (confirmar_governador == 1)
+                    {
+                        candidato.registrar_voto();
+                        salvarCandidatos(candidatos);
+                        eleitor.setVotouGovernador(true);
+                        salvarEleitores(eleitores); // Salva as alterações no arquivo JSON de eleitores
+                        cout << "Voto registrado com sucesso!" << endl;
+                        system("pause");
+                        limpar_dados();
+                        voto();
+                    }
+                    else
+                    {
+                        cout << "Voto não confirmado." << endl;
+                    }
+
+                    system("pause");
+                    limpar_dados();
+                    voto();
+                }
+            }
+        }
+        {
+        }
+    }
+}
 /**
  * @brief Exibe os resultados da votação por cargo.
  * 
@@ -753,6 +806,7 @@ void Interface::adm()
     if (security.autenticate_admin())
     {
         limpar_dados();
+        menu_admin();
         return;
     }
     else
