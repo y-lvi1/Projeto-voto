@@ -17,18 +17,20 @@ void Interface::limpar_dados()
 }
 void Interface::inicial()
 {
+    //Bem vindo ao sistema de votacao brasileiro!
     vector<Eleitor> eleitores = carregarEleitores();
 
     int opcao = 0;
-
-    cout << "Bem vindo ao sistema de votacao brasileiro!\n"
-         << endl;
-    cout << "Digite uma opcão:\n"
-         << endl;
-    cout << "1. Cadastro." << endl;
-    cout << "2. Login." << endl;
-    cout << "3. Resultado das Eleições." << endl;
-    cout << "4. Entrar como administrador" << endl;
+    cout << "╔═══════════════════════════════════════════════╗" << endl;
+    cout << "║ Bem vindo ao sistema de votacao brasileiro!   ║" << endl;
+    cout << "╚═══════════════════════════════════════════════╝" << endl << endl;
+    cout << "===========================================" << endl;
+    cout << "| 1. Cadastro.                            |" << endl;
+    cout << "| 2. Login.                               |" << endl;
+    cout << "| 3. Resultado das Eleições.              |" << endl;
+    cout << "| 4. Entrar como administrador            |" << endl;
+    cout << "===========================================" << endl;
+    cout << "Digite uma opcão: " << std::flush;
     cin >> opcao;
     switch (opcao)
     {
@@ -62,9 +64,12 @@ void Interface::inicial()
 bool Interface::logar(vector<Eleitor> &eleitores)
 {
     string nome, cpf;
-    cout << "Insira seu nome: " << endl;
+    cout << "╔═══════════════════════════════════════════════╗" << endl;
+    cout << "║ Login                                         ║" << endl;
+    cout << "╚═══════════════════════════════════════════════╝" << endl << endl;
+    cout << "Insira seu nome: ";
     getline(cin >> std::ws, nome);
-    cout << "Insira seu CPF: " << endl;
+    cout << "Insira seu CPF: ";
     getline(cin >> std::ws, cpf);
     for (const auto &eleitor : eleitores)
     {
@@ -72,12 +77,11 @@ bool Interface::logar(vector<Eleitor> &eleitores)
         {
             cout << "Login realizado com sucesso!" << endl;
             sessao_atual = eleitor.getNumEleitor();
-            // Aqui você pode adicionar o código para logar o usuário
             return true; // Interrompe o login
         }
         else
         {
-            // Aqui você pode adicionar o código para tratar o caso de login falho
+
             continue;
         }
     }
@@ -101,13 +105,17 @@ void Interface::voto()
 
 {
     int opcao_voto;
-    cout << "Bem-vindo ao sistema de votação!\n" << endl;
+    cout << "╔═══════════════════════════════════════════════╗" << endl;
+    cout << "║ Bem vindo ao sistema de votacao!              ║" << endl;
+    cout << "╚═══════════════════════════════════════════════╝" << endl << endl;
     dados_logados(carregarEleitores(), sessao_atual);
     cout << endl;
-    cout << "Digite uma opção:\n" << endl;
-    cout << "1. Votar" << endl;
-    cout << "2. Vizualizar Lista de Candidatos" << endl;
-    cout << "3. Sair" << endl;
+    cout << "===========================================" << endl;
+    cout << "| 1. Votar                                 |" << endl;
+    cout << "| 2. Vizualizar Lista de Candidatos        |" << endl;
+    cout << "| 3. Sair                                  |" << endl;
+    cout << "===========================================" << endl;
+    cout << "Digite uma opção: " << std::flush;
     cin >> std::ws;
     cin >> opcao_voto;
     switch (opcao_voto)
@@ -138,10 +146,15 @@ void Interface::voto()
 }
 void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
 {
-    cout << "Selecione uma opção:\n" << endl;
-    cout << "1.Listar por cargo" << endl;
-    cout << "2.Listar por partido" << endl;
-    cout << "3.Listar todos os candidatos" << endl;
+    cout << "╔═══════════════════════════════════════════════╗" << endl;
+    cout << "║ Listagem de candidatos:                       ║" << endl;
+    cout << "╚═══════════════════════════════════════════════╝" << endl;
+    cout << "==========================================" << endl;
+    cout << "| 1. Listar por cargo                    |" << endl;
+    cout << "| 2. Listar por partido                  |" << endl;
+    cout << "| 3. Listar todos os candidatos          |" << endl;
+    cout << "==========================================" << endl;   
+    cout << "Digite uma opção: " << std::flush;
     int opcao;
     int cargo;
     string partido;
@@ -150,10 +163,15 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
     {
     case 1:
         limpar_dados();
-        cout << "Digite o cargo que deseja listar: " << std::flush << endl;
-        cout << "1. Presidente" << endl;
-        cout << "2. Governador" << endl;
-        cout << "3.Sair" << endl;
+        cout << "╔═══════════════════════════════════════════════╗" << endl;
+        cout << "║ Listar por cargo                              ║" << endl;
+        cout << "╚═══════════════════════════════════════════════╝" << endl;
+        cout << "===========================================" << endl;
+        cout << "| 1. Presidente                           |" << endl;
+        cout << "| 2. Governador                           |" << endl;
+        cout << "| 3. Sair                                 |" << endl;
+        cout << "===========================================" << endl;
+        cout << "Digite uma opção: " << std::flush;
         cin >> cargo;
         limpar_dados();
         switch ((cargo))
@@ -201,7 +219,10 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
         break;
     case 2:
         limpar_dados();
-        cout << "Digite o partido que deseja listar: " << std::flush << endl;
+        cout << "╔═══════════════════════════════════════════════╗" << endl;
+        cout << "║ Listar por partido                            ║" << endl;
+        cout << "╚═══════════════════════════════════════════════╝" << endl;
+        cout << "Digite o partido que deseja listar: " << std::flush;
         cin >> partido;
         for (const auto &candidato : candidatos)
         {
@@ -218,8 +239,9 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
     case 3:
         limpar_dados();
         cout << "Lista de todos os candidatos disponíveis. " << std::flush << endl;
-        cout << "Presidentes:" << endl
-             << endl;
+        cout << "===========================================" << endl;
+        cout << "| Presidentes                             |" << endl;
+        cout << "=========================================== " << endl;
         for (const auto &candidato : candidatos)
         {
             if (candidato.getCargo() == "Presidente" || candidato.getCargo() == "presidente")
@@ -228,8 +250,9 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
                 cout << endl;
             }
         }
-        cout << "Governadores:" << endl
-             << endl;
+        cout << "===========================================" << endl;
+        cout << "| Governadores:                           |" << endl;
+        cout << "===========================================" << endl;
         for (const auto &candidato : candidatos)
         {
             if (candidato.getCargo() == "Governador" || candidato.getCargo() == "governador")
@@ -348,9 +371,8 @@ void Interface::votando()
 void Interface::resultado_eleicoes()
 {
     vector<Candidato> candidatos = carregarCandidatos();
-
-    cout << "\n\n=========================================" << endl;
-    cout << "      RESULTADO DAS ELEIÇÕES" << endl;
+    cout << "=========================================" << endl;
+    cout << "|     RESULTADO DAS ELEIÇÕES            |" << endl;
     cout << "=========================================" << endl;
 
     if (candidatos.empty())
@@ -359,24 +381,30 @@ void Interface::resultado_eleicoes()
         return;
     }
 
-    int total_votos = 0;
+    int total_votos_presidente = 0;
+    int total_votos_governador = 0;
 
     for (const auto &candidato : candidatos)
     {
-        total_votos += candidato.getVotos();
+        if (candidato.getCargo() == "Presidente" || candidato.getCargo() == "presidente")
+        {
+            total_votos_presidente += candidato.getVotos();
+        }
+        else if (candidato.getCargo() == "Governador" || candidato.getCargo() == "governador")
+        {
+            total_votos_governador += candidato.getVotos();
+        }
     }
 
-    if (total_votos == 0)
+    if (total_votos_presidente == 0 && total_votos_governador == 0)
     {
         cout << "\nNenhum voto foi registado nesta eleição." << endl;
         return;
     }
-
     sort(candidatos.begin(), candidatos.end(), [](const Candidato &a, const Candidato &b)
          { return a.getVotos() > b.getVotos(); });
 
-    cout << "\n--- VOTAÇÃO POR CANDIDATO ---\n"
-         << endl;
+    cout << "\n--- VOTAÇÃO POR CANDIDATO PARA PRESIDENTE ---\n\n\n";
 
     cout << left << setw(25) << "Candidato (Urna)"
          << setw(15) << "Partido"
@@ -388,8 +416,10 @@ void Interface::resultado_eleicoes()
 
     for (const auto &candidato : candidatos)
     {
+        if (candidato.getCargo() != "Presidente" && candidato.getCargo() != "presidente")
+            continue; // Ignora candidatos que não são presidentes
 
-        double percentual = (static_cast<double>(candidato.getVotos()) / total_votos) * 100.0;
+        double percentual = (static_cast<double>(candidato.getVotos()) / total_votos_presidente) * 100.0;
 
         cout << left << setw(25) << candidato.getNomeUrna()
              << setw(15) << candidato.getPartido()
@@ -399,7 +429,7 @@ void Interface::resultado_eleicoes()
 
     cout << "\n--- RESUMO DA VOTACAO ---\n"
          << endl;
-    cout << "Total de Votos Apurados: " << total_votos << endl;
+    cout << "Total de Votos Apurados: " << total_votos_presidente << endl;
 
     cout << "\n-----------------------------------------" << endl;
 
@@ -414,21 +444,66 @@ void Interface::resultado_eleicoes()
     }
     cout << "-----------------------------------------" << endl;
 
+    sort(candidatos.begin(), candidatos.end(), [](const Candidato &a, const Candidato &b)
+         { return a.getVotos() > b.getVotos(); });
+
+    cout << "\n\n--- VOTAÇÃO POR CANDIDATO PARA GOVERNADOR ---\n\n";
+
+    cout << left << setw(25) << "Candidato (Urna)"
+         << setw(15) << "Partido"
+         << setw(10) << "Votos"
+         << "Percentual (%)" << endl;
+    cout << "------------------------------------------------------------------" << endl;
+
+    cout << fixed << setprecision(2);
+
+    for (const auto &candidato : candidatos)
+    {
+        if (candidato.getCargo() != "Governador" && candidato.getCargo() != "governador")
+            continue;
+
+        double percentual = (static_cast<double>(candidato.getVotos()) / total_votos_governador) * 100.0;
+
+        cout << left << setw(25) << candidato.getNomeUrna()
+             << setw(15) << candidato.getPartido()
+             << setw(10) << candidato.getVotos()
+             << percentual << "%" << endl;
+    }
+
+    cout << "\n--- RESUMO DA VOTACAO ---\n"
+         << endl;
+    cout << "Total de Votos Apurados: " << total_votos_governador << endl;
+
+    cout << "\n-----------------------------------------" << endl;
+
+    if (!candidatos.empty() && candidatos[0].getVotos() > 0)
+    {
+        cout << "VENCEDOR(A): " << candidatos[0].getNomeUrna()
+                << " (" << candidatos[0].getPartido() << ")" << endl;
+    }
+    else
+    {
+        cout << "Não houve vencedor." << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+
     system("pause");
     limpar_dados();
 }
+
 
 void Interface::cadastrar_eleitor(vector<Eleitor> &eleitores)
 {
     string nome, cpf, num_eleitor;
     int idade;
-    cout << "Bem-vindo ao cadastro de usuário!\n"
-         << endl;
-    cout << "Digite seu nome: " << std::flush << endl;
+    cout << "╔═══════════════════════════════════════════════╗" << endl;
+    cout << "║ Cadastro de Eleitor                           ║" << endl;
+    cout << "╚═══════════════════════════════════════════════╝" << endl << endl;
+    cout << "Digite seu nome: " << std::flush;
     getline(cin >> std::ws, nome);
-    cout << "Digite seu CPF: " << std::flush << endl;
+    cout << "Digite seu CPF: " << std::flush;
     getline(cin >> std::ws, cpf);
-    cout << "Digite sua idade: " << std::flush << endl;
+    cout << "Digite sua idade: " << std::flush;
     cin >> idade;
     if (idade < 16)
     {
@@ -440,6 +515,8 @@ void Interface::cadastrar_eleitor(vector<Eleitor> &eleitores)
         if (eleitor_existente.getCpf() == cpf)
         {
             std::cout << "\n>>> ERRO: Este CPF já está cadastrado. <<<" << std::endl;
+            cout << "Por favor, verifique os dados e tente novamente." << endl;
+            system("pause");
             return; // Interrompe o cadastro
         }
     }
