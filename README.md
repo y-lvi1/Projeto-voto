@@ -44,7 +44,7 @@ Projeto desenvolvido utilizando a linguagem C++. Um sistema eleitoral simples qu
 4. Admin:
    - Pode adicionar ou remover candidatos
 
-> Cada eleitor pode votar apenas uma vez por cargo.
+ Cada eleitor pode votar apenas uma vez por cargo.
 
 
 ## 👥 Equipe
