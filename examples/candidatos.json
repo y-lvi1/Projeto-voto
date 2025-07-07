@@ -1,0 +1,46 @@
+[
+    {
+        "cargo": "Presidente",
+        "cpf": "12345678901",
+        "idade": 67,
+        "nome": "Jair Messias Bolsonaro",
+        "nome_urna": "Bolsonaro",
+        "num_eleitor": "22",
+        "numero": 22,
+        "partido": "PL",
+        "votos": 15
+    },
+    {
+        "cargo": "Presidente",
+        "cpf": "23456789012",
+        "idade": 55,
+        "nome": "Luiz Inácio Lula da Silva",
+        "nome_urna": "Lula",
+        "num_eleitor": "13",
+        "numero": 13,
+        "partido": "PT",
+        "votos": 16
+    },
+    {
+        "cargo": "Governador",
+        "cpf": "12345678901",
+        "idade": 45,
+        "nome": "João Doria",
+        "nome_urna": "Doria",
+        "num_eleitor": "45",
+        "numero": 45,
+        "partido": "PSDB",
+        "votos": 16
+    },
+    {
+        "cargo": "Governador",
+        "cpf": "45678901234",
+        "idade": 50,
+        "nome": "Fernando Haddad",
+        "nome_urna": "Haddad",
+        "num_eleitor": "13",
+        "numero": 13,
+        "partido": "PT",
+        "votos": 15
+    }
+]
