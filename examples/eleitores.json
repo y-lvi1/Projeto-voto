@@ -1,0 +1,250 @@
+[
+    {
+        "cpf": "12345678901",
+        "idade": 45,
+        "nome": "Maria Oliveira",
+        "num_eleitor": "123456789012",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "23456789012",
+        "idade": 33,
+        "nome": "João Silva",
+        "num_eleitor": "234567890123",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "34567890123",
+        "idade": 67,
+        "nome": "Ana Costa",
+        "num_eleitor": "345678901234",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "45678901234",
+        "idade": 21,
+        "nome": "Lucas Souza",
+        "num_eleitor": "456789012345",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "56789012345",
+        "idade": 52,
+        "nome": "Carla Pereira",
+        "num_eleitor": "567890123456",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "67890123456",
+        "idade": 19,
+        "nome": "Pedro Santos",
+        "num_eleitor": "678901234567",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "78901234567",
+        "idade": 71,
+        "nome": "Sonia Ferreira",
+        "num_eleitor": "789012345678",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "89012345678",
+        "idade": 38,
+        "nome": "Marcos Almeida",
+        "num_eleitor": "890123456789",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "90123456789",
+        "idade": 41,
+        "nome": "Juliana Lima",
+        "num_eleitor": "901234567890",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "01234567890",
+        "idade": 25,
+        "nome": "Rafael Barbosa",
+        "num_eleitor": "012345678901",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "11223344556",
+        "idade": 60,
+        "nome": "Fernanda Gomes",
+        "num_eleitor": "112233445566",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "22334455667",
+        "idade": 29,
+        "nome": "Ricardo Martins",
+        "num_eleitor": "223344556677",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "33445566778",
+        "idade": 35,
+        "nome": "Patricia Rocha",
+        "num_eleitor": "334455667788",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "44556677889",
+        "idade": 48,
+        "nome": "Leandro Azevedo",
+        "num_eleitor": "445566778899",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "55667788990",
+        "idade": 55,
+        "nome": "Sandra Nogueira",
+        "num_eleitor": "556677889900",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "66778899001",
+        "idade": 18,
+        "nome": "Gabriel Alves",
+        "num_eleitor": "667788990011",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "77889900112",
+        "idade": 31,
+        "nome": "Amanda Ribeiro",
+        "num_eleitor": "778899001122",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "88990011223",
+        "idade": 42,
+        "nome": "Felipe Cardoso",
+        "num_eleitor": "889900112233",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "99001122334",
+        "idade": 27,
+        "nome": "Larissa Pinto",
+        "num_eleitor": "990011223344",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "00112233445",
+        "idade": 58,
+        "nome": "Roberto Dias",
+        "num_eleitor": "001122334455",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "11335577991",
+        "idade": 22,
+        "nome": "Beatriz Melo",
+        "num_eleitor": "113355779911",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "22446688002",
+        "idade": 63,
+        "nome": "Eduardo Castro",
+        "num_eleitor": "224466880022",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "33557799113",
+        "idade": 40,
+        "nome": "Cristina Monteiro",
+        "num_eleitor": "335577991133",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "44668800224",
+        "idade": 36,
+        "nome": "Vinicius Barros",
+        "num_eleitor": "446688002244",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "55779911335",
+        "idade": 28,
+        "nome": "Isabela Freitas",
+        "num_eleitor": "557799113355",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "66880022446",
+        "idade": 49,
+        "nome": "Tiago Correia",
+        "num_eleitor": "668800224466",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "77991133557",
+        "idade": 51,
+        "nome": "Regina Duarte",
+        "num_eleitor": "779911335577",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "88002244668",
+        "idade": 34,
+        "nome": "Alexandre Cunha",
+        "num_eleitor": "880022446688",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "99113355779",
+        "idade": 24,
+        "nome": "Vanessa Fernandes",
+        "num_eleitor": "991133557799",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "987650123400",
+        "idade": 23,
+        "nome": "Jadiel Lucas",
+        "num_eleitor": "781849105223",
+        "votou_governador": true,
+        "votou_presidente": true
+    },
+    {
+        "cpf": "19283746500",
+        "idade": 16,
+        "nome": "Junior Silva",
+        "num_eleitor": "769226942995",
+        "votou_governador": true,
+        "votou_presidente": true
+    }
+]

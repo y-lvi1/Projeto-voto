@@ -3,14 +3,13 @@
 
 #include <string>
 
-class Security{
-    private:
-
+class Security
+{
+private:
     std::string hash_loaded;
 
-    public:
-
-    bool arquivo_aberto = true; 
+public:
+    bool arquivo_aberto = true;
 
     Security();
 
