@@ -57,7 +57,7 @@ Projeto desenvolvido utilizando a linguagem C++. Um sistema eleitoral simples qu
   
 - Jadiel: Segurança, autenticação e administração
 
-## TODO
+## ⚒️ TODO
 
 Projeto ainda em desenvolvimento, com prazo de entrega de somente 14 dias.
 
