@@ -18,7 +18,7 @@ Projeto desenvolvido utilizando a linguagem C++. Um sistema eleitoral simples qu
 
 - C++
 - CMake
-- Hash
+- Biblioteca `picosha2` para leitura e criação de Hashs
 - Biblioteca `nlohmann/json` para manipulação de arquivos JSON
 
 ## ⚠️ Validações
