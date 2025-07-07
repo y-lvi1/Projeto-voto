@@ -5,7 +5,8 @@
 
 extern std::string sessao_atual;
 
-class Eleitor : public Cadastro {
+class Eleitor : public Cadastro
+{
 private:
     bool votouPresidente;
     bool votouGovernador;

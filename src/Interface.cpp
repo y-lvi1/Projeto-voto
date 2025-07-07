@@ -6,14 +6,15 @@
 #include "Eleitor.hpp"
 #include "Interface.hpp"
 #include "json_utils.hpp"
+#include "Logger.hpp"
 
 using namespace std;
 
-std::string sessao_atual; //Variável global para armazenar sessão atual
+std::string sessao_atual; // Variável global para armazenar sessão atual
 
 /**
  * @brief Limpa a tela do console.
- * 
+ *
  * Esta função utiliza o comando "clear" no Linux/Unix ou "cls" no Windows para limpar a tela do console.
  * É útil para manter a interface do usuário limpa e organizada, especialmente após a execução de ações
  */
@@ -25,7 +26,7 @@ void Interface::limpar_dados()
 
 /**
  * @brief Inicializa o sistema de votação.
- * 
+ *
  * Esta função exibe o menu inicial do sistema de votação brasileiro, permitindo que o usuário escolha entre cadastrar um eleitor, fazer login, ver resultados das eleições ou entrar como administrador.
  */
 void Interface::inicial()
@@ -36,73 +37,89 @@ void Interface::inicial()
 
     int opcao = 0; // Variável para armazenar a opção escolhida pelo usuário
 
-    cout << "╔═══════════════════════════════════════════════╗" << endl;
-    cout << "║ Bem vindo ao sistema de votacao brasileiro!   ║" << endl;
-    cout << "╚═══════════════════════════════════════════════╝" << endl
-         << endl;
-    cout << "===========================================" << endl;
-    cout << "| 1. Cadastro.                            |" << endl;
-    cout << "| 2. Login.                               |" << endl;
-    cout << "| 3. Resultado das Eleições.              |" << endl;
-    cout << "| 4. Entrar como administrador            |" << endl;
-    cout << "===========================================" << endl;
-    cout << "Digite uma opcão: " << std::flush;
-
-    cin >> opcao;
-
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpa o buffer de entrada para evitar problemas com entradas subsequentes
-    
-    switch (opcao)
+    while (1)
     {
-    
-    // Menu de cadastro
-    case 1:
+        cout << "╔═══════════════════════════════════════════════╗" << endl;
+        cout << "║ Bem vindo ao sistema de votacao brasileiro!   ║" << endl;
+        cout << "╚═══════════════════════════════════════════════╝" << endl
+             << endl;
+        cout << "===========================================" << endl;
+        cout << "| 1. Cadastro.                            |" << endl;
+        cout << "| 2. Login.                               |" << endl;
+        cout << "| 3. Resultado das Eleições.              |" << endl;
+        cout << "| 4. Entrar como administrador            |" << endl;
+        cout << "===========================================" << endl;
+        cout << "Digite uma opcão: " << std::flush;
 
-        limpar_dados();
-        cadastrar_eleitor(eleitores);
-        break;
-    
-    // Menu de login
-    case 2:
+        cin >> opcao;
 
-        limpar_dados();
-        if (logar(eleitores))
+        // Limpa o buffer de entrada para evitar problemas com entradas subsequentes
+        if (std::cin.fail())
         {
+            Logger::log("Entrada inválida no menu inicial.");
+            std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            system("pause");
             limpar_dados();
-            voto();
+            continue;
         }
-        limpar_dados();
-        break;
-    
-    // Menu de resultados das eleições
-    case 3:
 
-        limpar_dados();
-        resultado_eleicoes();
-        break;
-    
-    // Menu de administrador
-    case 4:
+        switch (opcao)
+        {
 
-        limpar_dados();
-        adm();
-        break;
-    
-    // Opção inválida
-    default:
+        // Menu de cadastro
+        case 1:
 
-        cout << "Opcao invalida!" << endl;
-        break;
+            limpar_dados();
+            cadastrar_eleitor(eleitores);
+            break;
+
+        // Menu de login
+        case 2:
+
+            limpar_dados();
+            if (logar(eleitores))
+            {
+                Logger::log("Eleitor " + sessao_atual + " logou no sistema.");
+                limpar_dados();
+                voto();
+            }
+            limpar_dados();
+            break;
+
+        // Menu de resultados das eleições
+        case 3:
+
+            limpar_dados();
+            resultado_eleicoes();
+            break;
+
+        // Menu de administrador
+        case 4:
+
+            limpar_dados();
+            adm();
+            break;
+
+        // Opção inválida
+        default:
+            limpar_dados();
+            cout << "Opcao invalida!" << endl;
+            Logger::log("Opção inválida no menu inicial.");
+            system("pause");
+            break;
+        }
     }
 }
 
 /**
  * @brief Realiza o login do eleitor.
- * 
+ *
  * Esta função solicita o nome e CPF do eleitor, verifica se os dados estão corretos e inicia a sessão do eleitor se o login for bem-sucedido.
- * 
+ *
  * @param eleitores Vetor de eleitores cadastrados.
- * 
+ *
  * @return true Se o login for bem-sucedido.
  * @return false Se o login falhar.
  */
@@ -120,7 +137,6 @@ bool Interface::logar(vector<Eleitor> &eleitores)
     cout << "Insira seu CPF: ";
     getline(cin >> std::ws, cpf);
 
-    
     if (nome.empty() || cpf.empty())
     {
         cout << "Nome ou CPF não podem ser vazios." << endl;
@@ -150,9 +166,9 @@ bool Interface::logar(vector<Eleitor> &eleitores)
 
 /**
  * @brief Exibe os dados do eleitor logado.
- * 
+ *
  * Esta função exibe o nome e o número do título de eleitor do eleitor que está atualmente logado.
- * 
+ *
  * @param eleitores Vetor de eleitores cadastrados.
  * @param sessao_atual Número do título de eleitor da sessão atual.
  */
@@ -172,7 +188,7 @@ void Interface::dados_logados(const std::vector<Eleitor> &eleitores, const std::
 
 /**
  * @brief Inicia o processo de votação.
- * 
+ *
  * Esta função exibe o menu de votação, permitindo que o eleitor vote, visualize a lista de candidatos ou saia do sistema.
  */
 
@@ -205,14 +221,24 @@ void Interface::voto()
         cin >> std::ws;
         cin >> opcao_voto;
 
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpa o buffer de entrada para evitar problemas com entradas subsequentes
+        // Limpa o buffer de entrada para evitar problemas com entradas subsequentes
+        if (std::cin.fail())
+        {
+            Logger::log("Entrada inválida no menu de votação.");
+            std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            system("pause");
+            limpar_dados();
+            continue;
+        }
 
         switch (opcao_voto)
         {
 
         // Opção 1: Votar
         case 1:
-
+            Logger::log("Eleitor " + sessao_atual + " iniciou o processo de votação.");
             limpar_dados();
             votando();
             break;
@@ -237,8 +263,10 @@ void Interface::voto()
 
         // Opção inválida
         default:
-
+            limpar_dados();
             cout << "Opção inválida!" << endl;
+            Logger::log("Opção inválida no menu de votação.");
+            system("pause");
             break;
         }
     }
@@ -246,16 +274,16 @@ void Interface::voto()
 
 /**
  * @brief Exibe a lista de candidatos disponíveis para votação.
- * 
+ *
  * Esta função permite que o usuário visualize os candidatos por cargo, por partido ou todos os candidatos.
- * 
+ *
  * @param candidatos Vetor de candidatos cadastrados.
  */
 
 void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
 {
-    int opcao; // Variável para armazenar a opção escolhida pelo usuário
-    int cargo; // Variável para armazenar o cargo escolhido pelo usuário
+    int opcao;      // Variável para armazenar a opção escolhida pelo usuário
+    int cargo;      // Variável para armazenar o cargo escolhido pelo usuário
     string partido; // Variável para armazenar o partido escolhido pelo usuário
 
     while (1)
@@ -272,7 +300,17 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
 
         cin >> opcao;
 
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpa o buffer de entrada para evitar problemas com entradas subsequentes
+        // Limpa o buffer de entrada para evitar problemas com entradas subsequentes
+        if (std::cin.fail())
+        {
+            Logger::log("Entrada inválida no menu de listagem de candidatos.");
+            std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            system("pause");
+            limpar_dados();
+            continue;
+        }
 
         switch (opcao)
         {
@@ -294,7 +332,17 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
 
             cin >> cargo;
 
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            // Limpa o buffer de entrada para evitar problemas com entradas subsequentes
+            if (std::cin.fail())
+            {
+                Logger::log("Entrada inválida no menu de listagem por cargo.");
+                std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                system("pause");
+                limpar_dados();
+                continue;
+            }
 
             limpar_dados();
 
@@ -364,7 +412,16 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
 
             cin >> partido;
 
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            if (std::cin.fail())
+            {
+                Logger::log("Entrada inválida no menu de listagem por partido.");
+                std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                system("pause");
+                limpar_dados();
+                return;
+            }
 
             // Percorre a lista de candidatos e exibe os dados dos candidatos que pertencem ao partido informado
             for (const auto &candidato : candidatos)
@@ -441,9 +498,9 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
 
 /**
  * @brief Realiza o processo de votação.
- * 
+ *
  * Esta função permite que o eleitor vote em um candidato específico, verificando se ele já votou para presidente ou governador.
- * 
+ *
  * @param candidatos Vetor de candidatos disponíveis para votação.
  */
 
@@ -452,12 +509,15 @@ void Interface::votando()
     int numero_voto_presidente; // Variável para armazenar o número do candidato escolhido pelo eleitor
 
     vector<Candidato> candidatos = carregarCandidatos(); // Carrega os candidatos do arquivo JSON
-    vector<Eleitor> eleitores = carregarEleitores(); // Carrega os eleitores do arquivo JSON
+    vector<Eleitor> eleitores = carregarEleitores();     // Carrega os eleitores do arquivo JSON
+
+    Logger::log("Iniciando o processo de votação.");
 
     // Verifica se não há candidatos ou eleitores cadastrados
     // Se não houver candidatos, exibe uma mensagem informando que não há candidatos cadastrados
     if (candidatos.empty())
     {
+        Logger::log("Nenhum candidato cadastrado.");
         cout << "Nenhum candidato cadastrado." << endl;
         system("pause");
         limpar_dados();
@@ -465,25 +525,40 @@ void Interface::votando()
     }
     if (eleitores.empty())
     {
+        Logger::log("Nenhum eleitor cadastrado.");
         cout << "Nenhum eleitor cadastrado." << endl;
+        system("pause");
         return;
     }
     cout << "╔═══════════════════════════════════════════════╗" << endl;
     cout << "║ Votação                                       ║" << endl;
-    cout << "╚═══════════════════════════════════════════════╝" << endl << endl;
+    cout << "╚═══════════════════════════════════════════════╝" << endl
+         << endl;
     cout << "Digite o número do candidato para presidente: " << std::flush;
+
+    Logger::log("Eleitor " + sessao_atual + " iniciou o processo de votação para presidente.");
+
     cin >> numero_voto_presidente;
 
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpa o buffer de entrada para evitar problemas com entradas subsequentes
+    if (std::cin.fail())
+    {
+        Logger::log("Entrada inválida no processo de votação para presidente.");
+        std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        system("pause");
+        limpar_dados();
+        return;
+    }
 
     // Verifica se o número do voto é válido
     // Percorre a lista de candidatos e verifica se o número do voto corresponde ao número de algum candidato
     if (numero_voto_presidente <= 0)
     {
+        Logger::log("Número de voto inválido.");
         cout << "Número de voto inválido. Por favor, tente novamente." << endl;
         system("pause");
         limpar_dados();
-        votando();
         return;
     }
 
@@ -500,9 +575,13 @@ void Interface::votando()
                 {
                     if ((candidato.getCargo() == "Presidente" || candidato.getCargo() == "presidente") && eleitor.getVotouPresidente() == true)
                     {
+                        Logger::log("Eleitor " + sessao_atual + " já votou para presidente.");
                         cout << "Você já votou para presidente!" << endl;
+                        system("pause");
+                        limpar_dados();
                         continue;
                     }
+
                     candidato.mostrar_dados();
                     cout << endl;
                     cout << "Confirmar voto?" << endl;
@@ -513,49 +592,77 @@ void Interface::votando()
 
                     cin >> confirmar_presidente;
 
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    if (std::cin.fail())
+                    {
+                        Logger::log("Entrada inválida no menu de confirmação de voto para presidente.");
+                        std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+                        std::cin.clear();
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        system("pause");
+                        limpar_dados();
+                        return;
+                    }
 
                     // Se o eleitor confirmar o voto, registra o voto do candidato e atualiza o status de votação do eleitor
                     if (confirmar_presidente == 1)
                     {
+
                         eleitor.setVotouPresidente(true);
-                        salvarEleitores(eleitores); // Salva as alterações no arquivo JSON de eleitores
-                        candidato.registrar_voto(); // Registra o voto do candidato
+                        salvarEleitores(eleitores);   // Salva as alterações no arquivo JSON de eleitores
+                        candidato.registrar_voto();   // Registra o voto do candidato
                         salvarCandidatos(candidatos); // Salva as alterações no arquivo JSON de candidatos
 
+                        Logger::log("Eleitor " + sessao_atual + " confirmou o voto para presidente.");
                         cout << "Voto registrado com sucesso!" << endl;
-                        break;
+                        system("pause");
+                        limpar_dados();
                     }
 
-                    // Se o eleitor não confirmar o voto, exibe uma mensagem de cancelamento e retorna ao menu de votação
+                    // Se o eleitor não confirmar o voto, exibe uma mensagem de cancelamento
                     else if (confirmar_presidente == 2)
                     {
+                        Logger::log("Eleitor " + sessao_atual + " cancelou o voto para presidente.");
                         cout << "Voto cancelado." << endl;
                         cout << "Retornando ao menu de votação" << endl;
                         system("pause");
                         limpar_dados();
-                        voto();
-                        return;
-                        break;
                     }
                     return;
                 }
             }
         }
     }
+
     cout << "Digite o número de candidato para governador: ";
+
+    Logger::log("Eleitor " + sessao_atual + " iniciou o processo de votação para governador.");
+
     int numero_voto_governador; // Variável para armazenar o número do candidato escolhido pelo eleitor para governador
+
     cin >> numero_voto_governador;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpa o buffer de entrada para evitar problemas com entradas subsequentes
+
+    if (std::cin.fail())
+    {
+        Logger::log("Entrada inválida no processo de votação para governador.");
+        std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        system("pause");
+        limpar_dados();
+        return;
+    }
+
     // Verifica se o número do voto é válido
     if (numero_voto_governador <= 0)
     {
+        Logger::log("Número de voto inválido.");
         cout << "Número de voto inválido. Por favor, tente novamente." << endl;
         system("pause");
         limpar_dados();
-        votando();
         return;
     }
+
+    // Percorre a lista de candidatos e verifica se o número do voto corresponde ao número de algum candidato para governador
     for (auto &candidato : candidatos)
     {
         // Se o número do voto corresponde ao número do candidato, verifica se o eleitor já votou para governador
@@ -567,15 +674,15 @@ void Interface::votando()
                 {
                     if ((candidato.getCargo() == "Governador" || candidato.getCargo() == "governador") && eleitor.getVotouGovernador() == true)
                     {
+                        Logger::log("Eleitor " + sessao_atual + " já votou para governador.");
+
                         cout << "Você já votou para governador!" << endl;
                         system("pause");
                         limpar_dados();
-                        voto();
                         break;
                     }
 
                     // Se o eleitor não votou para o cargo do candidato, exibe os dados do candidato e pergunta se o eleitor deseja confirmar o voto
-                
                     candidato.mostrar_dados();
                     cout << endl;
                     cout << "Confirmar voto?" << endl;
@@ -586,46 +693,62 @@ void Interface::votando()
 
                     cin >> confirmar_governador;
 
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    if (std::cin.fail())
+                    {
+                        Logger::log("Entrada inválida no menu de confirmação de voto para governador.");
+                        std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+                        std::cin.clear();
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        system("pause");
+                        limpar_dados();
+                        return;
+                    }
 
                     // Se o eleitor confirmar o voto, registra o voto do candidato e atualiza os dados do eleitor
                     if (confirmar_governador == 1)
                     {
-                        candidato.registrar_voto();
-                        salvarCandidatos(candidatos);
-                        eleitor.setVotouGovernador(true);
-                        salvarEleitores(eleitores); // Salva as alterações no arquivo JSON de eleitores
+                        candidato.registrar_voto();       // Registra o voto do candidato
+                        salvarCandidatos(candidatos);     // Salva as alterações no arquivo JSON de candidatos
+                        eleitor.setVotouGovernador(true); // Atualiza o status de votação do eleitor para governador
+                        salvarEleitores(eleitores);       // Salva as alterações no arquivo JSON de eleitores
+
+                        Logger::log("Eleitor " + sessao_atual + " confirmou o voto para governador.");
+
                         cout << "Voto registrado com sucesso!" << endl;
                         system("pause");
                         limpar_dados();
-                        voto();
+                        return;
                     }
                     else
                     {
+                        Logger::log("Eleitor " + sessao_atual + " cancelou o voto para governador.");
                         cout << "Voto não confirmado." << endl;
+                        cout << "Retornando ao menu de votação" << endl;
+                        system("pause");
+                        limpar_dados();
+                        return;
                     }
 
                     system("pause");
                     limpar_dados();
-                    voto();
+                    return;
                 }
             }
         }
-        {
-        }
     }
 }
+
 /**
  * @brief Exibe os resultados da votação por cargo.
- * 
+ *
  * Esta função exibe os resultados da votação para um cargo específico, mostrando os candidatos, seus votos e percentuais.
  * * A função também exibe o vencedor do cargo.
- * 
+ *
  * @param cargo O cargo para o qual os resultados serão exibidos (ex: "Presidente", "Governador").
  * @param todos_candidatos Vetor de todos os candidatos cadastrados.
  */
 
-void Interface::exibirResultadosPorCargo(const string& cargo, const vector<Candidato>& todos_candidatos) const
+void Interface::exibirResultadosPorCargo(const string &cargo, const vector<Candidato> &todos_candidatos) const
 {
     cout << "\n\n--- VOTACAO POR CANDIDATO PARA " << cargo << " ---\n\n";
 
@@ -633,34 +756,40 @@ void Interface::exibirResultadosPorCargo(const string& cargo, const vector<Candi
 
     // Filtra os candidatos do cargo específico
     // Percorre a lista de todos os candidatos e adiciona os candidatos do cargo especificado
-    for (const auto& candidato : todos_candidatos) {
-        if (candidato.getCargo() == cargo) {
+    for (const auto &candidato : todos_candidatos)
+    {
+        if (candidato.getCargo() == cargo)
+        {
             candidatos_do_cargo.push_back(candidato);
         }
     }
-    
+
     // Se não houver candidatos para o cargo, exibe uma mensagem informando que não há candidatos
-    if (candidatos_do_cargo.empty()) {
+    if (candidatos_do_cargo.empty())
+    {
+        Logger::log("Nenhum candidato concorreu a este cargo: " + cargo);
         cout << "Nenhum candidato concorreu a este cargo." << endl;
         return;
     }
 
     int total_votos_cargo = 0;
     // Percorre a lista de candidatos do cargo e soma os votos de cada candidato
-    for (const auto& candidato : candidatos_do_cargo) {
+    for (const auto &candidato : candidatos_do_cargo)
+    {
         total_votos_cargo += candidato.getVotos();
     }
 
     // Se não houver votos registrados para o cargo, exibe uma mensagem informando que não há votos
-    if (total_votos_cargo == 0) {
+    if (total_votos_cargo == 0)
+    {
+        Logger::log("Nenhum voto registrado para o cargo: " + cargo);
         cout << "Nenhum voto registado para este cargo." << endl;
         return;
     }
 
     // Ordena os candidatos do cargo por número de votos em ordem decrescente
-    sort(candidatos_do_cargo.begin(), candidatos_do_cargo.end(), [](const Candidato& a, const Candidato& b) {
-        return a.getVotos() > b.getVotos();
-    });
+    sort(candidatos_do_cargo.begin(), candidatos_do_cargo.end(), [](const Candidato &a, const Candidato &b)
+         { return a.getVotos() > b.getVotos(); });
 
     // Exibe o cabeçalho da tabela de resultados
     cout << left << setw(25) << "Candidato (Urna)"
@@ -670,12 +799,15 @@ void Interface::exibirResultadosPorCargo(const string& cargo, const vector<Candi
     cout << "------------------------------------------------------------------" << endl;
     cout << fixed << setprecision(2);
 
+    Logger::log("Exibindo resultados para o cargo: " + cargo);
+
     // Percorre a lista de candidatos do cargo e exibe os dados de cada candidato
     // Calcula o percentual de votos de cada candidato e exibe uma barra gráfica representando o percentual
-    for (const auto& candidato : candidatos_do_cargo) {
+    for (const auto &candidato : candidatos_do_cargo)
+    {
         double percentual = (static_cast<double>(candidato.getVotos()) / total_votos_cargo) * 100.0; // Calcula o percentual de votos
-        int tam_barra = static_cast<int>(percentual / 5); // Converte o percentual em comprimento da barra (5% por caractere)
-        string barra_grafica(tam_barra, '#'); // Cria a barra gráfica com o número de caracteres correspondente ao percentual
+        int tam_barra = static_cast<int>(percentual / 5);                                            // Converte o percentual em comprimento da barra (5% por caractere)
+        string barra_grafica(tam_barra, '#');                                                        // Cria a barra gráfica com o número de caracteres correspondente ao percentual
 
         // Exibe os dados do candidato, incluindo nome, partido, votos e percentual
         cout << left << setw(25) << candidato.getNomeUrna()
@@ -689,30 +821,36 @@ void Interface::exibirResultadosPorCargo(const string& cargo, const vector<Candi
     cout << "\n--- RESUMO DA VOTACAO PARA " << cargo << " ---\n";
     cout << "Total de Votos Apurados: " << total_votos_cargo << endl;
     cout << "-----------------------------------------" << endl;
-    
+
     // Exibe o vencedor do cargo, que é o candidato com mais votos
     cout << "VENCEDOR(A): " << candidatos_do_cargo[0].getNomeUrna() //
          << " (" << candidatos_do_cargo[0].getPartido() << ")" << endl;
     cout << "-----------------------------------------" << endl;
+
+    Logger::log("Resultados exibidos com sucesso para o cargo: " + cargo);
 }
 
 /**
  * @brief Exibe o resultado das eleições.
- * 
+ *
  * Esta função exibe os resultados das eleições, incluindo a lista de candidatos, o total de votos e o vencedor.
  */
 
 void Interface::resultado_eleicoes()
 {
     // Carrega os dados apenas uma vez
-    vector<Candidato> candidatos = carregarCandidatos(); 
+    vector<Candidato> candidatos = carregarCandidatos();
 
     cout << "\n\n=========================================" << endl;
     cout << "      RESULTADO OFICIAL DAS ELEICOES" << endl;
     cout << "=========================================" << endl;
 
+    Logger::log("Exibindo resultados das eleições.");
+
     // Verifica se não há candidatos cadastrados
-    if (candidatos.empty()) {
+    if (candidatos.empty())
+    {
+        Logger::log("Nenhum candidato cadastrado.");
         cout << "Nenhum candidato cadastrado." << endl;
         system("pause");
         limpar_dados();
@@ -728,16 +866,18 @@ void Interface::resultado_eleicoes()
 
 /**
  * @brief Cadastra um novo eleitor no sistema.
- * 
+ *
  * Esta função solicita os dados do eleitor, verifica se o CPF já está cadastrado e, se não estiver, cria um novo objeto Eleitor e o adiciona à lista de eleitores.
- * 
+ *
  * @param eleitores Vetor de eleitores cadastrados.
  */
 
 void Interface::cadastrar_eleitor(vector<Eleitor> &eleitores)
 {
     string nome, cpf, num_eleitor; // Variáveis para armazenar os dados do eleitor
-    int idade; // Variável para armazenar a idade do eleitor
+    int idade;                     // Variável para armazenar a idade do eleitor
+
+    Logger::log("Iniciando cadastro de eleitor.");
 
     cout << "╔═══════════════════════════════════════════════╗" << endl;
     cout << "║ Cadastro de Eleitor                           ║" << endl;
@@ -751,12 +891,24 @@ void Interface::cadastrar_eleitor(vector<Eleitor> &eleitores)
 
     cin >> idade;
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpa o buffer de entrada para evitar problemas com entradas subsequentes
-    
+    if (std::cin.fail())
+    {
+        Logger::log("Entrada inválida no cadastro de eleitor.");
+        std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        system("pause");
+        limpar_dados();
+        return;
+    }
+
     // Verifica se o eleitor tem mais de 16 anos, pois é necessário ter pelo menos 16 anos para se cadastrar
     if (idade < 16)
     {
         cout << "Você deve ter pelo menos 16 anos para se cadastrar." << endl;
+        Logger::log("Tentativa de cadastro de eleitor com idade menor que 16 anos: " + nome + " - CPF: " + cpf);
+        system("pause");
+        limpar_dados();
         return;
     }
 
@@ -765,6 +917,7 @@ void Interface::cadastrar_eleitor(vector<Eleitor> &eleitores)
     {
         if (eleitor_existente.getCpf() == cpf)
         {
+            Logger::log("Tentativa de cadastro com CPF já existente: " + cpf);
             std::cout << "\n>>> ERRO: Este CPF já está cadastrado. <<<" << std::endl;
             cout << "Por favor, verifique os dados e tente novamente." << endl;
             system("pause");
@@ -776,20 +929,23 @@ void Interface::cadastrar_eleitor(vector<Eleitor> &eleitores)
     // O número é gerado através da função gerar_titulo() definida em json_utils.hpp
     num_eleitor = gerar_titulo();
     Eleitor e1(false, false, nome, cpf, idade, num_eleitor); // Cria um novo objeto Eleitor com os dados fornecidos
-    eleitores.push_back(e1); // Adiciona o novo eleitor ao vetor de eleitores
-    salvarEleitores(eleitores); // Salva os eleitores no arquivo JSON
+    eleitores.push_back(e1);                                 // Adiciona o novo eleitor ao vetor de eleitores
+    salvarEleitores(eleitores);                              // Salva os eleitores no arquivo JSON
+
+    Logger::log("Cadastro de eleitor realizado com sucesso: " + nome + " - CPF: " + cpf);
 
     limpar_dados();
-    cout << "Cadastro realizado com sucesso!" << endl;
+    cout << "Cadastro realizado com sucesso!\n"
+         << endl;
     cout << "Seu número de título de eleitor: " << num_eleitor << endl;
-    cout << "Agora você pode votar!" << endl;
+    cout << "\nAgora você pode votar!" << endl;
     system("pause");
     limpar_dados();
 }
 
 /**
  * @brief Autentica o administrador do sistema.
- * 
+ *
  * Esta função solicita a senha do administrador e verifica se a autenticação é bem-sucedida.
  * Se a autenticação for bem-sucedida, chama o menu do administrador.
  */
@@ -797,7 +953,9 @@ void Interface::cadastrar_eleitor(vector<Eleitor> &eleitores)
 void Interface::adm()
 {
     Security security; // Cria um objeto Security para autenticação
-    string senha; // Variável para armazenar a senha do administrador
+    string senha;      // Variável para armazenar a senha do administrador
+
+    Logger::log("Tentativa de autenticação do administrador.");
 
     cout << "Digite a senha do administrador: ";
 
@@ -807,18 +965,20 @@ void Interface::adm()
     {
         limpar_dados();
         menu_admin();
-        return;
     }
     else
     {
         cout << "Falha na autenticação do administrador." << endl;
+        Logger::log("Falha na autenticação do administrador.");
+        system("pause");
+        limpar_dados();
         return;
     }
 }
 
 /**
  * @brief Exibe o menu do administrador.
- * 
+ *
  * Esta função exibe o menu do administrador, permitindo que ele cadastre ou delete candidatos.
  * O menu continua ativo até que o administrador escolha sair.
  */
@@ -828,6 +988,8 @@ void Interface::menu_admin()
     vector<Candidato> candidatos = carregarCandidatos(); // Carrega os candidatos do arquivo JSON
 
     int adm_opcao; // Variável para armazenar a opção escolhida pelo administrador
+
+    Logger::log("Menu do administrador iniciado.");
 
     while (1)
     {
@@ -841,7 +1003,16 @@ void Interface::menu_admin()
 
         cin >> adm_opcao;
 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        if (std::cin.fail())
+        {
+            Logger::log("Entrada inválida no menu do administrador.");
+            std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            system("pause");
+            limpar_dados();
+            continue;
+        }
 
         switch (adm_opcao)
         {
@@ -850,8 +1021,6 @@ void Interface::menu_admin()
         case 1:
             limpar_dados();
             cadastrarCandidato(candidatos);
-            system("pause");
-            limpar_dados();
             break;
 
         // Opção 2: Deletar Candidato
@@ -862,17 +1031,19 @@ void Interface::menu_admin()
 
         // Opção 3: Sair do menu do administrador
         case 3:
+            Logger::log("Administrador saiu do menu.");
+
+            limpar_dados();
             cout << "Retornando ao menu inicial..." << endl;
             system("pause");
-            limpar_dados();
             return;
             break;
 
         // Opção inválida
         default:
+            limpar_dados();
             cout << "Opção inválida, digite novamente!" << endl;
             system("pause");
-            limpar_dados();
             break;
         }
     }
@@ -880,10 +1051,10 @@ void Interface::menu_admin()
 
 /**
  * @brief Lista os candidatos cadastrados.
- * 
+ *
  * Esta função exibe uma lista formatada de todos os candidatos cadastrados no sistema.
  * Se não houver candidatos, exibe uma mensagem informando que não há candidatos cadastrados.
- * 
+ *
  * @param candidatos Vetor de candidatos cadastrados.
  */
 
@@ -916,16 +1087,18 @@ void Interface::listarCandidatos(const std::vector<Candidato> &candidatos) const
 
 /**
  * @brief Cadastra um novo candidato no sistema.
- * 
+ *
  * Esta função solicita os dados do candidato, verifica se o número do candidato já está cadastrado e, se não estiver, cria um novo objeto Candidato e o adiciona à lista de candidatos.
- * 
+ *
  * @param candidatos Vetor de candidatos cadastrados.
  */
 
 void Interface::cadastrarCandidato(vector<Candidato> &candidatos)
 {
     string nome, cpf, num_eleitor, nome_urna, partido, cargo; // Variáveis para armazenar os dados do candidato
-    int idade, numero_candidato; // Variáveis para armazenar a idade e o número do candidato
+    int idade, numero_candidato;                              // Variáveis para armazenar a idade e o número do candidato
+
+    Logger::log("Iniciando cadastro de candidato.");
 
     cout << "Cadastrar Candidato" << endl;
     cout << "Digite o nome do candidato: ";
@@ -935,14 +1108,32 @@ void Interface::cadastrarCandidato(vector<Candidato> &candidatos)
     cout << "Digite a idade do candidato: ";
     cin >> idade;
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    if (std::cin.fail())
+    {
+        Logger::log("Entrada inválida no cadastro de candidato.");
+        std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        system("pause");
+        limpar_dados();
+        return;
+    }
 
     cout << "Digite o número de eleitor do candidato: ";
     getline(cin >> std::ws, num_eleitor);
     cout << "Digite o número do candidato: ";
     cin >> numero_candidato;
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    if (std::cin.fail())
+    {
+        Logger::log("Entrada inválida no cadastro de candidato.");
+        std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        system("pause");
+        limpar_dados();
+        return;
+    }
 
     cout << "Digite o nome de urna do candidato: ";
     getline(cin >> std::ws, nome_urna);
@@ -952,10 +1143,12 @@ void Interface::cadastrarCandidato(vector<Candidato> &candidatos)
     getline(cin >> std::ws, cargo);
 
     Candidato c1(nome, cpf, idade, num_eleitor, numero_candidato, nome_urna, partido, cargo); // Cria um novo objeto Candidato com os dados fornecidos
-    candidatos.push_back(c1); // Adiciona o novo candidato ao vetor de candidatos
-    salvarCandidatos(candidatos); // Salva os candidatos no arquivo JSON
+    candidatos.push_back(c1);                                                                 // Adiciona o novo candidato ao vetor de candidatos
+    salvarCandidatos(candidatos);                                                             // Salva os candidatos no arquivo JSON
 
-    cout << "Candidato cadastrado com sucesso!" << endl;
+    Logger::log("Cadastro de candidato realizado com sucesso: " + nome + " - CPF: " + cpf + " - Número: " + std::to_string(numero_candidato));
+
+    cout << "\nCandidato cadastrado com sucesso!" << endl;
 
     system("pause");
     limpar_dados();
@@ -963,19 +1156,23 @@ void Interface::cadastrarCandidato(vector<Candidato> &candidatos)
 
 /**
  * @brief Deleta um candidato do sistema.
- * 
+ *
  * Esta função permite que o administrador delete um candidato específico, solicitando o número de eleitor do candidato a ser deletado.
  * Se o candidato for encontrado, ele é removido da lista e os dados são salvos no arquivo JSON.
- * 
+ *
  * @param candidatos Vetor de candidatos cadastrados.
  */
 
 void Interface::deletarCandidato(std::vector<Candidato> &candidatos)
 {
+
+    Logger::log("Iniciando processo de deleção de candidato.");
+
     // Verifica se a lista de candidatos está vazia
     if (candidatos.empty())
     {
         std::cout << "\nNão há candidatos para deletar." << std::endl;
+        Logger::log("Tentativa de deleção de candidato sem candidatos cadastrados.");
         system("pause");
         limpar_dados();
         return;
@@ -988,11 +1185,10 @@ void Interface::deletarCandidato(std::vector<Candidato> &candidatos)
     std::cout << "\nDigite o número de eleitor do candidato que deseja deletar: ";
     std::cin >> numero_para_deletar;
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
     // Verifica se a entrada do usuário é válida
     if (std::cin.fail())
     {
+        Logger::log("Entrada inválida ao tentar deletar candidato.");
         std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -1008,6 +1204,7 @@ void Interface::deletarCandidato(std::vector<Candidato> &candidatos)
     {
         if (candidatos[i].getNumEleitor() == numero_para_deletar)
         {
+            Logger::log("Candidato encontrado para deleção: " + candidatos[i].getNomeUrna() + " - Número: " + std::to_string(candidatos[i].getNumero()));
             index_encontrado = i; // Armazena o índice do candidato encontrado
             break;
         }
@@ -1016,6 +1213,7 @@ void Interface::deletarCandidato(std::vector<Candidato> &candidatos)
     // Se o candidato não for encontrado, exibe uma mensagem informando que o candidato não foi encontrado
     if (index_encontrado == -1)
     {
+        Logger::log("Candidato não encontrado para deleção: Número " + numero_para_deletar);
         std::cout << "\nCandidato com o número " << numero_para_deletar << " Não foi encontrado." << std::endl;
         system("pause");
         limpar_dados();
@@ -1031,7 +1229,16 @@ void Interface::deletarCandidato(std::vector<Candidato> &candidatos)
     std::cout << "\nTem certeza que deseja deletar este candidato? [S/N]: ";
     std::cin >> confirmacao;
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    if (std::cin.fail())
+    {
+        Logger::log("Entrada inválida ao tentar deletar candidato.");
+        std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        system("pause");
+        limpar_dados();
+        return;
+    }
 
     // Verifica se a entrada do usuário é válida
     if (confirmacao == 'S' || confirmacao == 's')
@@ -1043,15 +1250,19 @@ void Interface::deletarCandidato(std::vector<Candidato> &candidatos)
 
         std::cout << "\nCandidato deletado com sucesso!" << std::endl;
 
+        Logger::log("Candidato deletado com sucesso: " + candidatos[index_encontrado].getNomeUrna() + " - Número: " + std::to_string(candidatos[index_encontrado].getNumero()));
+
         system("pause");
         limpar_dados();
         return;
     }
-    
+
     // Se o usuário não confirmar a exclusão, exibe uma mensagem de cancelamento
     else
     {
         std::cout << "\nOperação cancelada pelo utilizador." << std::endl;
+
+        Logger::log("Operação de deleção de candidato cancelada pelo usuário.");
 
         system("pause");
         limpar_dados();

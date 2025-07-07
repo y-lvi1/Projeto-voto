@@ -3,15 +3,16 @@
 #include "Cadastro.hpp"
 #include <iostream>
 
-class Candidato : public Cadastro {
+class Candidato : public Cadastro
+{
 private:
     int numero_candidato;
     std::string nome_urna;
     std::string partido;
     std::string cargo_disputado;
     int votos = 0;
-public:
 
+public:
     Candidato();
     Candidato(std::string nome, std::string cpf, int idade, std::string num_eleitor,
               int numero, std::string nome_urna, std::string partido, std::string cargo);
