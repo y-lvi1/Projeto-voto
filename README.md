@@ -61,8 +61,8 @@ Projeto desenvolvido utilizando a linguagem C++. Um sistema eleitoral simples qu
 
 Projeto ainda em desenvolvimento, com prazo de entrega de somente 14 dias.
 
-[] Adição de votos brancos e nulos
-[] Cadastro e Login com senha por hash
-[] Interface gráfica
-[] Banco de dados com encriptação
-[] Mais modularização
+- [ ] Adição de votos brancos e nulos
+- [ ] Cadastro e Login com senha por hash
+- [ ] Interface gráfica
+- [ ] Banco de dados com encriptação
+- [ ] Mais modularização
