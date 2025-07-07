@@ -66,3 +66,7 @@ Projeto ainda em desenvolvimento, com prazo de entrega de somente 14 dias.
 - [ ] Interface gráfica
 - [ ] Banco de dados com encriptação
 - [ ] Mais modularização
+
+## 📄 Licença
+
+Este projeto está licenciado sob a **Licença MIT**. Veja o ficheiro [LICENSE](LICENSE) para mais detalhes.
