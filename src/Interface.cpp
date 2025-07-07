@@ -616,6 +616,7 @@ void Interface::votando()
                         cout << "Voto registrado com sucesso!" << endl;
                         system("pause");
                         limpar_dados();
+                        continue;
                     }
 
                     // Se o eleitor não confirmar o voto, exibe uma mensagem de cancelamento
@@ -632,7 +633,9 @@ void Interface::votando()
             }
         }
     }
-
+    cout << "╔═══════════════════════════════════════════════╗" << endl;
+    cout << "║ Votação                                       ║" << endl;
+    cout << "╚═══════════════════════════════════════════════╝" << endl << endl;
     cout << "Digite o número de candidato para governador: ";
 
     Logger::log("Eleitor " + sessao_atual + " iniciou o processo de votação para governador.");
@@ -679,6 +682,7 @@ void Interface::votando()
                         cout << "Você já votou para governador!" << endl;
                         system("pause");
                         limpar_dados();
+                        voto();
                         break;
                     }
 
