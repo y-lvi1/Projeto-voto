@@ -56,4 +56,13 @@ Projeto desenvolvido utilizando a linguagem C++. Um sistema eleitoral simples qu
 - Yago: Interface do Usuário (CLI) e Menu
   
 - Jadiel: Segurança, autenticação e administração
->>>>>>> Yuri-teste
+
+## TODO
+
+Projeto ainda em desenvolvimento, com prazo de entrega de somente 14 dias.
+
+[] Adição de votos brancos e nulos
+[] Cadastro e Login com senha por hash
+[] Interface gráfica
+[] Banco de dados com encriptação
+[] Mais modularização
