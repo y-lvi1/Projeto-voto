@@ -14,6 +14,8 @@ file(GLOB SOURCES "src/*.cpp")
 
 add_executable(urna_eletronica ${SOURCES})
 
+target_link_libraries(urna_eletronica PRIVATE winmm)
+
 target_include_directories(urna_eletronica PUBLIC include)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")

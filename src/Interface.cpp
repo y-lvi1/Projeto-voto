@@ -7,6 +7,8 @@
 #include "Interface.hpp"
 #include "json_utils.hpp"
 #include "Logger.hpp"
+#include <windows.h>
+#include <mmsystem.h>
 
 using namespace std;
 
@@ -620,7 +622,7 @@ void Interface::votando_presidente()
                     // Se o eleitor confirmar o voto, registra o voto do candidato e atualiza o status de votação do eleitor
                     if (confirmar_presidente == 1)
                     {
-
+                        PlaySound(TEXT("urna.wav"), NULL, SND_FILENAME | SND_ASYNC);
                         eleitor.setVotouPresidente(true); // Atualiza o status de votação do eleitor para presidente
                         salvarEleitores(eleitores);       // Salva as alterações no arquivo JSON de eleitores
                         candidato.registrar_voto();       // Registra o voto do candidato
@@ -775,6 +777,7 @@ void Interface::votando_governador()
                     // Se o eleitor confirmar o voto, registra o voto do candidato e atualiza os dados do eleitor
                     if (confirmar_governador == 1)
                     {
+                        PlaySound(TEXT("urna.wav"), NULL, SND_FILENAME | SND_ASYNC);
                         candidato.registrar_voto();       // Registra o voto do candidato
                         salvarCandidatos(candidatos);     // Salva as alterações no arquivo JSON de candidatos
                         eleitor.setVotouGovernador(true); // Atualiza o status de votação do eleitor para governador
