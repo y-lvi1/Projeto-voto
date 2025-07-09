@@ -9,7 +9,8 @@ class Interface
 {
 private:
 public:
-    void votando();
+    void votando_presidente();
+    void votando_governador();
     void mostrar_candidatos(const std::vector<Candidato> &candidatos);
     void dados_logados(const std::vector<Eleitor> &eleitores, const std::string &sessao_atual);
     void voto();
