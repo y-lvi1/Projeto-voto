@@ -1,4 +1,5 @@
 #include "Security.hpp"
+#include "Interface.hpp"
 #include "picosha2.h"
 #include "Logger.hpp"
 #include <iostream>
@@ -23,19 +24,11 @@ Security::Security()
     // Verifica se o arquivo foi aberto com sucesso
     if (!file.is_open())
     {
-        cout << "Error: O arquivo hash.txt não pôde ser aberto!\n" << std::endl;
-        Logger::log("Erro ao abrir o arquivo hash.txt");
-
         arquivo_aberto = false; // Define a variável arquivo_aberto como false se o arquivo não puder ser aberto
-        return;
     }
 
     file >> hash_loaded; // Lê o hash do arquivo e armazena na variável hash_loaded
     file.close(); // Fecha o arquivo após a leitura
-
-    Logger::log("Arquivo hash.txt aberto com sucesso");
-
-    return;
 }
 
 /**

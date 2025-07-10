@@ -8,6 +8,7 @@
  *
  * Esta função define como os objetos Eleitor e Candidato serão convertidos para JSON.
  */
+
 void to_json(json &j, const Eleitor &e)
 {
     j = json{

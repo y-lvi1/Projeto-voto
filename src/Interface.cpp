@@ -1048,6 +1048,17 @@ void Interface::adm()
 
     Logger::log("Tentativa de autenticação do administrador.");
 
+    if(security.arquivo_aberto == false)
+    {
+        cout << "Error: O arquivo hash.txt não pôde ser aberto!\n" << std::endl;
+        Logger::log("Erro ao abrir o arquivo hash.txt");
+        system("pause");
+        limpar_dados();
+        return;
+    }
+
+    Logger::log("Arquivo hash.txt aberto com sucesso");
+
     cout << "Digite a senha do administrador: ";
 
     // Verifica se a senha é válida
@@ -1129,17 +1140,17 @@ void Interface::menu_admin()
         case 3:
             Logger::log("Administrador saiu do menu.");
 
-            limpar_dados();
             cout << "Retornando ao menu inicial..." << endl;
             system("pause");
+            limpar_dados();
             return; // Retorna ao menu inicial se o administrador escolher sair
             break;
 
         // Opção inválida
         default:
-            limpar_dados();
             cout << "Opção inválida, digite novamente!" << endl;
             system("pause");
+            limpar_dados();
             break;
         }
     }
