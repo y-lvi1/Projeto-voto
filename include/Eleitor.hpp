@@ -3,7 +3,7 @@
 
 #include "Cadastro.hpp"
 
-extern std::string sessao_atual; // Variável global para armazenar sessão atual
+
 
 /**
  * @file Eleitor.hpp

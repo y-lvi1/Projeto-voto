@@ -3,18 +3,17 @@ cmake_minimum_required(VERSION 3.15)
 project(UrnaEletronica VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
-
 add_compile_options(-fexec-charset=UTF-8 -finput-charset=UTF-8)
-
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+find_package(Threads REQUIRED)
 
 file(GLOB SOURCES "src/*.cpp")
 
 add_executable(urna_eletronica ${SOURCES})
 
-target_link_libraries(urna_eletronica PRIVATE winmm)
+target_link_libraries(urna_eletronica PRIVATE Threads::Threads winmm)
 
 target_include_directories(urna_eletronica PUBLIC include)
 

@@ -1,18 +1,18 @@
 
-#include <iostream>
-#include <string>
-#include <limits>
 #include "Security.hpp"
 #include "Eleitor.hpp"
 #include "Interface.hpp"
 #include "json_utils.hpp"
 #include "Logger.hpp"
 #include <windows.h>
-#include <mmsystem.h>
+#include <thread>
 
 using namespace std;
 
-std::string sessao_atual; // Variável global para armazenar sessão atual
+string sessao_atual; // Variável global para armazenar sessão atual
+
+static vector<Eleitor> eleitores; // Vetor para armazenar os eleitores cadastrados (visível apenas neste arquivo)
+static vector<Candidato> candidatos; // Vetor para armazenar os candidatos cadastrados (visível apenas neste arquivo)
 
 /**
  * @brief Limpa a tela do console.
@@ -21,8 +21,8 @@ std::string sessao_atual; // Variável global para armazenar sessão atual
  * É útil para manter a interface do usuário limpa e organizada, especialmente após a execução de ações
  */
 
-void Interface::limpar_dados()
-{
+void limpar_dados(){
+
     system("clear || cls");
 }
 
@@ -31,12 +31,11 @@ void Interface::limpar_dados()
  *
  * Esta função exibe o menu inicial do sistema de votação brasileiro, permitindo que o usuário escolha entre cadastrar um eleitor, fazer login, ver resultados das eleições ou entrar como administrador.
  */
-void Interface::inicial()
+void InterfacePrincipal::inicial()
 {
-    // Carrega os eleitores do arquivo JSON
-    // Se o arquivo não existir, ele será criado automaticamente
-    vector<Eleitor> eleitores = carregarEleitores();
-
+    thread t1(carregarEleitores, ref(eleitores)); // Carrega os eleitores em uma thread separada
+    thread t2(carregarCandidatos, ref(candidatos)); // Carrega os candidatos em uma thread separada
+    
     int opcao = 0; // Variável para armazenar a opção escolhida pelo usuário
 
     while (1)
@@ -50,6 +49,7 @@ void Interface::inicial()
         cout << "| 2. Login.                               |" << endl;
         cout << "| 3. Resultado das Eleições.              |" << endl;
         cout << "| 4. Entrar como administrador            |" << endl;
+        cout << "| 5. Sair                                 |" << endl;
         cout << "===========================================" << endl;
         cout << "Digite uma opcão: " << std::flush;
 
@@ -74,42 +74,71 @@ void Interface::inicial()
         case 1:
 
             limpar_dados();
+
             cadastrar_eleitor(eleitores);
+
             break;
 
         // Menu de login
         case 2:
 
             limpar_dados();
-            if (logar(eleitores))
+
+            if (login(eleitores))
             {
+                InterfaceEleitor eleitorInterface;
+
                 Logger::log("Eleitor " + sessao_atual + " logou no sistema.");
+
                 limpar_dados();
-                voto();
+
+                eleitorInterface.voto();
             }
+
             limpar_dados();
+
             break;
 
         // Menu de resultados das eleições
         case 3:
 
             limpar_dados();
+
             resultado_eleicoes();
+
             break;
 
         // Menu de administrador
         case 4:
 
             limpar_dados();
-            adm();
+
+            login_adm();
+
             break;
+        
+        case 5:
+
+            limpar_dados();
+
+            sair();
+
+            t1.join(); // Aguarda a thread de carregamento dos eleitores terminar
+            t2.join(); // Aguarda a thread de carregamento dos candidatos terminar
+
+            return; // Encerra o programa
 
         // Opção inválida
         default:
+
             limpar_dados();
+
             cout << "Opcao invalida!" << endl;
+
             Logger::log("Opção inválida no menu inicial.");
+
             system("pause");
+
             break;
         }
     }
@@ -126,7 +155,7 @@ void Interface::inicial()
  * @return false Se o login falhar.
  */
 
-bool Interface::logar(vector<Eleitor> &eleitores)
+bool InterfacePrincipal::login(vector<Eleitor> &eleitores)
 {
     string nome, cpf; // Variáveis para armazenar o nome e CPF do eleitor
 
@@ -175,7 +204,7 @@ bool Interface::logar(vector<Eleitor> &eleitores)
  * @param sessao_atual Número do título de eleitor da sessão atual.
  */
 
-void Interface::dados_logados(const std::vector<Eleitor> &eleitores, const std::string &sessao_atual)
+void InterfaceEleitor::dados_logados(const std::vector<Eleitor> &eleitores, const std::string &sessao_atual)
 {
     // Verifica quem está logado
     for (const auto &eleitor : eleitores)
@@ -194,7 +223,7 @@ void Interface::dados_logados(const std::vector<Eleitor> &eleitores, const std::
  * Esta função exibe o menu de votação, permitindo que o eleitor vote, visualize a lista de candidatos ou saia do sistema.
  */
 
-void Interface::voto()
+void InterfaceEleitor::voto()
 
 {
     int opcao_voto; // Variável para armazenar a opção de voto escolhida pelo usuário
@@ -210,7 +239,7 @@ void Interface::voto()
         cout << "╚═══════════════════════════════════════════════╝" << endl
              << endl;
 
-        dados_logados(carregarEleitores(), sessao_atual); // Exibe os dados do eleitor logado
+        dados_logados(eleitores, sessao_atual); // Exibe os dados do eleitor logado
 
         cout << endl;
         cout << "===========================================" << endl;
@@ -249,7 +278,7 @@ void Interface::voto()
         case 2:
 
             limpar_dados();
-            mostrar_candidatos(carregarCandidatos());
+            mostrar_candidatos(candidatos);
             break;
 
         // Opção 3: Sair do sistema
@@ -259,7 +288,6 @@ void Interface::voto()
             cout << "Retornando ao menu inicial..." << endl;
             system("pause");
             limpar_dados();
-            inicial();
             return;
             break;
 
@@ -282,7 +310,7 @@ void Interface::voto()
  * @param candidatos Vetor de candidatos cadastrados.
  */
 
-void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
+void InterfaceEleitor::mostrar_candidatos(const std::vector<Candidato> &candidatos)
 {
     int opcao;      // Variável para armazenar a opção escolhida pelo usuário
     int cargo;      // Variável para armazenar o cargo escolhido pelo usuário
@@ -506,13 +534,10 @@ void Interface::mostrar_candidatos(const std::vector<Candidato> &candidatos)
  * @param candidatos Vetor de candidatos disponíveis para votação.
  */
 
-void Interface::votando_presidente()
+void InterfaceEleitor::votando_presidente()
 {
     int numero_voto_presidente; // Variável para armazenar o número do candidato escolhido pelo eleitor
     bool presidente_encontrado = false; // Variável para armazenar se o candidato foi encontrado
-
-    vector<Candidato> candidatos = carregarCandidatos(); // Carrega os candidatos do arquivo JSON
-    vector<Eleitor> eleitores = carregarEleitores();     // Carrega os eleitores do arquivo JSON
 
     Logger::log("Iniciando o processo de votação para presidente.");
 
@@ -660,14 +685,11 @@ void Interface::votando_presidente()
     }
 }
 
-void Interface::votando_governador()
+void InterfaceEleitor::votando_governador()
 {
 
     int numero_voto_governador; // Variável para armazenar o número do candidato escolhido pelo eleitor para governador
     bool governador_encontrado = false; // Variável para armazenar se o candidato foi encontrado
-
-    vector<Candidato> candidatos = carregarCandidatos(); // Carrega os candidatos do arquivo JSON
-    vector<Eleitor> eleitores = carregarEleitores();     // Carrega os eleitores do arquivo JSON
 
     if (candidatos.empty())
     {
@@ -833,7 +855,7 @@ void Interface::votando_governador()
  * @param todos_candidatos Vetor de todos os candidatos cadastrados.
  */
 
-void Interface::exibirResultadosPorCargo(const string &cargo, const vector<Candidato> &todos_candidatos) const
+void InterfacePrincipal::exibirResultadosPorCargo(const string &cargo, const vector<Candidato> &todos_candidatos) const
 {
     cout << "\n\n--- VOTAÇÃO POR CANDIDATO PARA " << cargo << " ---\n\n";
 
@@ -921,10 +943,8 @@ void Interface::exibirResultadosPorCargo(const string &cargo, const vector<Candi
  * Esta função exibe os resultados das eleições, incluindo a lista de candidatos, o total de votos e o vencedor.
  */
 
-void Interface::resultado_eleicoes()
+void InterfacePrincipal::resultado_eleicoes()
 {
-    // Carrega os dados apenas uma vez
-    vector<Candidato> candidatos = carregarCandidatos();
 
     cout << "\n\n=========================================" << endl;
     cout << "      RESULTADO OFICIAL DAS ELEICOES" << endl;
@@ -957,7 +977,7 @@ void Interface::resultado_eleicoes()
  * @param eleitores Vetor de eleitores cadastrados.
  */
 
-void Interface::cadastrar_eleitor(vector<Eleitor> &eleitores)
+void InterfacePrincipal::cadastrar_eleitor(vector<Eleitor> &eleitores)
 {
     string nome, cpf, num_eleitor; // Variáveis para armazenar os dados do eleitor
     int idade;                     // Variável para armazenar a idade do eleitor
@@ -1041,7 +1061,7 @@ void Interface::cadastrar_eleitor(vector<Eleitor> &eleitores)
  * Se a autenticação for bem-sucedida, chama o menu do administrador.
  */
 
-void Interface::adm()
+void InterfacePrincipal::login_adm()
 {
     Security security; // Cria um objeto Security para autenticação
     string senha;      // Variável para armazenar a senha do administrador
@@ -1066,7 +1086,8 @@ void Interface::adm()
     if (security.autenticate_admin())
     {
         limpar_dados();
-        menu_admin(); // Chama o menu do administrador se a autenticação for bem-sucedida
+        InterfaceAdmin admin; // Cria um objeto InterfaceAdmin para acessar o menu do administrador
+        admin.menu_admin(); // Chama o menu do administrador se a autenticação for bem-sucedida
     }
 
     // Se a senha não for válida, exibe uma mensagem de erro e retorna ao menu inicial
@@ -1080,6 +1101,15 @@ void Interface::adm()
     }
 }
 
+void InterfacePrincipal::sair()
+{
+    Logger::log("Usuário escolheu sair do sistema.");
+    cout << "Obrigado por usar o sistema de votação!" << endl;
+    cout << "Até a próxima!" << endl;
+    system("pause");
+    limpar_dados();
+}
+
 /**
  * @brief Exibe o menu do administrador.
  *
@@ -1087,9 +1117,8 @@ void Interface::adm()
  * O menu continua ativo até que o administrador escolha sair.
  */
 
-void Interface::menu_admin()
+void InterfaceAdmin::menu_admin()
 {
-    vector<Candidato> candidatos = carregarCandidatos(); // Carrega os candidatos do arquivo JSON
 
     int adm_opcao; // Variável para armazenar a opção escolhida pelo administrador
 
@@ -1165,7 +1194,7 @@ void Interface::menu_admin()
  * @param candidatos Vetor de candidatos cadastrados.
  */
 
-void Interface::listarCandidatos(const std::vector<Candidato> &candidatos) const
+void InterfaceAdmin::listarCandidatos(const std::vector<Candidato> &candidatos) const
 {
     std::cout << "\n--- Lista de Candidatos Cadastrados ---\n";
 
@@ -1200,7 +1229,7 @@ void Interface::listarCandidatos(const std::vector<Candidato> &candidatos) const
  * @param candidatos Vetor de candidatos cadastrados.
  */
 
-void Interface::cadastrarCandidato(vector<Candidato> &candidatos)
+void InterfaceAdmin::cadastrarCandidato(vector<Candidato> &candidatos)
 {
     string nome, cpf, num_eleitor, nome_urna, partido, cargo; // Variáveis para armazenar os dados do candidato
     int idade, numero_candidato;                              // Variáveis para armazenar a idade e o número do candidato
@@ -1285,7 +1314,7 @@ void Interface::cadastrarCandidato(vector<Candidato> &candidatos)
  * @param candidatos Vetor de candidatos cadastrados.
  */
 
-void Interface::deletarCandidato(std::vector<Candidato> &candidatos)
+void InterfaceAdmin::deletarCandidato(std::vector<Candidato> &candidatos)
 {
 
     Logger::log("Iniciando processo de deleção de candidato.");

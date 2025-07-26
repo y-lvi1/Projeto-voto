@@ -112,16 +112,16 @@ void salvarEleitores(const std::vector<Eleitor> &eleitores)
  * Se o arquivo não existir ou estiver vazio, retorna uma lista vazia.
  */
 
-std::vector<Eleitor> carregarEleitores()
+void carregarEleitores(std::vector<Eleitor> & eleitores)
 {
     std::ifstream arquivo("eleitores.json");
     if (!arquivo.is_open())
-        return {};
+        return;
     json j;
     arquivo >> j;
     if (j.empty() || !j.is_array())
-        return {};
-    return j.get<std::vector<Eleitor>>();
+        return;
+    eleitores = j.get<std::vector<Eleitor>>();
 }
 
 /**
@@ -167,14 +167,14 @@ void salvarCandidatos(const std::vector<Candidato> &candidatos)
  * Se o arquivo não existir ou estiver vazio, retorna uma lista vazia.
  */
 
-std::vector<Candidato> carregarCandidatos()
+void carregarCandidatos(std::vector<Candidato> & candidatos)
 {
     std::ifstream arquivo("candidatos.json");
     if (!arquivo.is_open())
-        return {};
+        return;
     json j;
     arquivo >> j;
     if (j.empty() || !j.is_array())
-        return {};
-    return j.get<std::vector<Candidato>>();
+        return;
+    candidatos = j.get<std::vector<Candidato>>();
 }

@@ -20,7 +20,7 @@ int main()
 
     srand(time(nullptr)); // Semente para números aleatórios, garantindo que cada execução gere resultados diferentes
 
-    Interface i; // Cria uma instância da classe Interface
+    InterfacePrincipal i; // Cria uma instância da classe Interface
     i.inicial(); // Chama o método inicial da interface, que exibe o menu principal
 
     return 0; // Apenas para evitar warning de retorno

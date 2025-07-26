@@ -73,7 +73,7 @@ void salvarEleitores(const std::vector<Eleitor> &eleitores);
  * Se o arquivo não existir ou estiver vazio, retorna uma lista vazia.
  */
 
-std::vector<Eleitor> carregarEleitores();
+ void carregarEleitores(std::vector<Eleitor> & eleitores);
 
 /**
  * @brief Gera um título de eleitor aleatório.
@@ -104,6 +104,6 @@ void salvarCandidatos(const std::vector<Candidato> &candidatos);
  * Se o arquivo não existir ou estiver vazio, retorna uma lista vazia.
  */
 
-std::vector<Candidato> carregarCandidatos();
+void carregarCandidatos(std::vector<Candidato> & candidatos);
 
 #endif

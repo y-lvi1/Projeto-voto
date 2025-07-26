@@ -1,5 +1,6 @@
 #ifndef CADASTRO_HPP
 #define CADASTRO_HPP
+
 #include <string>
 
 /**

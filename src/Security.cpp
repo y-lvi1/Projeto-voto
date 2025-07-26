@@ -47,7 +47,16 @@ bool Security::autenticate_admin()
 
     cin >> user_input;
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpa o buffer de entrada para evitar problemas com entradas subsequentes
+    if (std::cin.fail())
+        {
+            Logger::log("Entrada inválida no menu de votação.");
+            std::cout << "Entrada inválida. Operacão cancelada." << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            system("pause");
+            limpar_dados();
+            return false; // Retorna false se a entrada for inválida
+        }
 
     hash_input = picosha2::hash256_hex_string(user_input); // Calcula o hash SHA-256 da entrada do usuário
 
