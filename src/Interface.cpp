@@ -1398,14 +1398,13 @@ void InterfaceAdmin::deletarCandidato(std::vector<Candidato> &candidatos)
     // Verifica se a entrada do usuário é válida
     if (confirmacao == 'S' || confirmacao == 's')
     {
+        Logger::log("Candidato deletado com sucesso");
 
         candidatos.erase(candidatos.begin() + index_encontrado); // Remove o candidato encontrado da lista
 
         salvarCandidatos(candidatos); // Salva as alterações no arquivo JSON de candidatos
 
         std::cout << "\nCandidato deletado com sucesso!" << std::endl;
-
-        Logger::log("Candidato deletado com sucesso: " + candidatos[index_encontrado].getNomeUrna() + " - Número: " + std::to_string(candidatos[index_encontrado].getNumero()));
 
         system("pause");
         limpar_dados();
