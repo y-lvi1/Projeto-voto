@@ -1,4 +1,5 @@
 #include "json_utils.hpp"
+#include "Logger.hpp"
 
 /**
  * @brief Ensina a serializar e desserializar objetos do tipo Eleitor e Candidato usando a biblioteca nlohmann::json.
@@ -112,16 +113,48 @@ void salvarEleitores(const std::vector<Eleitor> &eleitores)
  * Se o arquivo não existir ou estiver vazio, retorna uma lista vazia.
  */
 
-void carregarEleitores(std::vector<Eleitor> & eleitores)
+void carregarEleitores(std::vector<Eleitor> &eleitores)
 {
     std::ifstream arquivo("eleitores.json");
+
     if (!arquivo.is_open())
         return;
-    json j;
-    arquivo >> j;
-    if (j.empty() || !j.is_array())
+
+    try
+    {
+        json j;
+        arquivo >> j;
+        if (j.empty() || !j.is_array())
+            return;
+        eleitores = j.get<std::vector<Eleitor>>();
+    }
+    catch (const json::parse_error &e)
+    {
+        std::cerr << "Erro, o arquivo "
+                     "eleitores.json"
+                     " está corrompido!: "
+                  << e.what() << std::endl;
+        Logger::log("ERRO DE PARSE em eleitores.json: " + std::string(e.what()));
+        eleitores.clear(); // Limpa a lista de eleitores em caso de erro
         return;
-    eleitores = j.get<std::vector<Eleitor>>();
+    }
+    catch (const json::type_error &e)
+    {
+        std::cerr << "Erro, o arquivo "
+                     "eleitores.json"
+                     " pode conter campos vazios ou corrompidos!: "
+                  << e.what() << std::endl;
+        Logger::log("ERRO DE TIPO em eleitores.json: " + std::string(e.what()));
+        eleitores.clear(); // Limpa a lista de eleitores em caso de erro
+        return;
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Erro desconhecido ao carregar eleitores: " << e.what() << std::endl;
+        Logger::log("Erro desconhecido ao carregar eleitores: " + std::string(e.what()));
+        eleitores.clear(); // Limpa a lista de eleitores em caso de erro
+        return;
+    }
 }
 
 /**
@@ -167,14 +200,38 @@ void salvarCandidatos(const std::vector<Candidato> &candidatos)
  * Se o arquivo não existir ou estiver vazio, retorna uma lista vazia.
  */
 
-void carregarCandidatos(std::vector<Candidato> & candidatos)
+void carregarCandidatos(std::vector<Candidato> &candidatos)
 {
     std::ifstream arquivo("candidatos.json");
     if (!arquivo.is_open())
         return;
-    json j;
-    arquivo >> j;
-    if (j.empty() || !j.is_array())
+    try
+    {
+        json j;
+        arquivo >> j;
+        if (j.empty() || !j.is_array())
+            return;
+        candidatos = j.get<std::vector<Candidato>>();
+    }
+    catch (const json::parse_error &e)
+    {
+        std::cerr << "Erro, o arquivo ""candidatos.json"" está corrompido!: "<< e.what() << std::endl;
+        Logger::log("ERRO DE PARSE em candidatos.json: " + std::string(e.what()));
+        candidatos.clear(); // Limpa a lista de candidatos em caso de erro
         return;
-    candidatos = j.get<std::vector<Candidato>>();
+    }
+    catch (const json::type_error &e)
+    {
+        std::cerr << "Erro, o arquivo ""candidatos.json"" pode conter campos vazios ou corrompidos!: "<< e.what() << std::endl;
+        Logger::log("ERRO DE TIPO em candidatos.json: " + std::string(e.what()));
+        candidatos.clear(); // Limpa a lista de candidatos em caso de erro
+        return;
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Erro desconhecido ao carregar candidatos: " << e.what() << std::endl;
+        Logger::log("Erro desconhecido ao carregar candidatos: " + std::string(e.what()));
+        candidatos.clear(); // Limpa a lista de candidatos em caso de erro
+        return;
+    }
 }
