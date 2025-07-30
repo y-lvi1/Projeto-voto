@@ -1,4 +1,5 @@
 #include "Candidato.hpp"
+#include <stdexcept>  
 
 // Construtor default (requisito da biblioteca json)
 Candidato::Candidato() = default;
@@ -8,7 +9,15 @@ Candidato::Candidato() = default;
 Candidato::Candidato(std::string nome, std::string cpf, int idade, std::string num_eleitor,
                      int numero, std::string nome_urna, std::string partido, std::string cargo)
     : Cadastro(nome, cpf, idade, num_eleitor), numero_candidato(numero),
-      nome_urna(nome_urna), partido(partido), cargo_disputado(cargo), votos(0) {}
+      nome_urna(nome_urna), partido(partido), cargo_disputado(cargo), votos(0) {
+
+        if (nome_urna.empty() || partido.empty() || std::to_string(numero_candidato).empty() || cargo_disputado.empty()) {
+        throw std::invalid_argument("Nome de urna, partido, número do candidato e cargo são obrigatórios.");
+    }
+
+    if (std::stoi(std::to_string(numero_candidato)) <= 0) {  // Validando se o número do candidato é positivo
+        throw std::invalid_argument("Número do candidato deve ser positivo.");
+    }}
 
 std::string Candidato::getNomeUrna() const { return nome_urna; }    // Getter para o nome de urna
 std::string Candidato::getPartido() const { return partido; }       // Getter para o partido
@@ -16,10 +25,10 @@ std::string Candidato::getCargo() const { return cargo_disputado; } // Getter pa
 int Candidato::getNumero() const { return numero_candidato; }       // Getter para o número do candidato
 int Candidato::getVotos() const { return votos; }                   // Getter para o número de votos
 
-void Candidato::setNome(const std::string nome) { this->nome = nome; }               // Setter para o nome
-void Candidato::setNumero(int numero) { this->numero_candidato = numero; }           // Setter para o número do candidato
-void Candidato::setPartido(const std::string partido) { this->partido = partido; }   // Setter para o partido
-void Candidato::setCargo(const std::string cargo) { this->cargo_disputado = cargo; } // Setter para o cargo disputado
+void Candidato::setNome(const std::string nome) {if(nome.empty()) {throw std::invalid_argument("Nome não pode ser vazio.");} this->nome = nome; }               // Setter para o nome
+void Candidato::setNumero(int numero) {if(numero <= 0) {throw std::invalid_argument("Número do candidato deve ser positivo.");} this->numero_candidato = numero; }           // Setter para o número do candidato
+void Candidato::setPartido(const std::string partido) { if(partido.empty()) {throw std::invalid_argument("Partido não pode ser vazio.");} this->partido = partido; }   // Setter para o partido
+void Candidato::setCargo(const std::string cargo) { if(cargo.empty()) {throw std::invalid_argument("Cargo não pode ser vazio.");} this->cargo_disputado = cargo; } // Setter para o cargo disputado
 void Candidato::setVotos(int votos) { this->votos = votos; }                         // Setter para o número de votos
 
 void Candidato::registrar_voto() { votos++; } // Incrementa o número de votos do candidato

@@ -1038,10 +1038,19 @@ void InterfacePrincipal::cadastrar_eleitor(vector<Eleitor> &eleitores)
     // O número é gerado através da função gerar_titulo() definida em json_utils.hpp
     num_eleitor = gerar_titulo();
 
-    Eleitor e1(false, false, nome, cpf, idade, num_eleitor); // Cria um novo objeto Eleitor com os dados fornecidos
 
+    try{ 
+    Eleitor e1(false, false, nome, cpf, idade, num_eleitor); // Cria um novo objeto Eleitor com os dados fornecidos
     eleitores.push_back(e1);    // Adiciona o novo eleitor ao vetor de eleitores
     salvarEleitores(eleitores); // Salva os eleitores no arquivo JSON
+    }
+    catch(const std::exception& e){
+        Logger::log("Erro ao cadastrar eleitor: " + std::string(e.what()));
+        cout << "Erro ao se cadastrar: " << e.what() << endl;
+        system("pause");
+        limpar_dados();
+        return;
+    }
 
     Logger::log("Cadastro de eleitor realizado com sucesso: " + nome + " - CPF: " + cpf);
 
@@ -1293,10 +1302,18 @@ void InterfaceAdmin::cadastrarCandidato(vector<Candidato> &candidatos)
     cout << "Digite o cargo disputado pelo candidato: ";
     getline(cin >> std::ws, cargo);
 
-    Candidato c1(nome, cpf, idade, num_eleitor, numero_candidato, nome_urna, partido, cargo); // Cria um novo objeto Candidato com os dados fornecidos
+    try{Candidato c1(nome, cpf, idade, num_eleitor, numero_candidato, nome_urna, partido, cargo); // Cria um novo objeto Candidato com os dados fornecidos
     candidatos.push_back(c1);                                                                 // Adiciona o novo candidato ao vetor de candidatos
     salvarCandidatos(candidatos);                                                             // Salva os candidatos no arquivo JSON
-
+    }
+    catch(const std::exception& e){
+        Logger::log("Erro ao cadastrar candidato: " + std::string(e.what()));
+        cout << "Erro ao se cadastrar: " << e.what() << endl;
+        system("pause");
+        limpar_dados();
+        return;
+    }
+    
     Logger::log("Cadastro de candidato realizado com sucesso: " + nome + " - CPF: " + cpf + " - Número: " + std::to_string(numero_candidato));
 
     cout << "\nCandidato cadastrado com sucesso!" << endl;

@@ -1,11 +1,17 @@
 #include "Cadastro.hpp"
+#include <stdexcept>
 
 // Construtor default (requisito da biblioteca json)
 Cadastro::Cadastro() = default;
 
 // Construtor com parâmetros
-Cadastro::Cadastro(std::string nome, std::string cpf, int idade, std::string num_eleitor) : nome(nome), cpf(cpf), idade(idade), num_eleitor(num_eleitor) {}
-
+Cadastro::Cadastro(std::string nome, std::string cpf, int idade, std::string num_eleitor) : nome(nome), cpf(cpf), idade(idade), num_eleitor(num_eleitor) { 
+    if (nome.empty() || cpf.empty()) {
+        throw std::invalid_argument("Nome e CPF não podem estar vazios.");
+    }
+    if (idade <= 0) {
+        throw std::invalid_argument("Idade deve ser maior que zero.");
+    }}
 // Destrutor
 Cadastro::~Cadastro() = default;
 
