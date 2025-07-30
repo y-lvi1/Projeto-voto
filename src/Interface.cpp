@@ -37,7 +37,6 @@ void InterfacePrincipal::inicial()
     thread t2(carregarCandidatos, ref(candidatos)); // Carrega os candidatos em uma thread separada
     
     int opcao = 0; // Variável para armazenar a opção escolhida pelo usuário
-
     while (1)
     {
         cout << "╔═══════════════════════════════════════════════╗" << endl;
@@ -51,7 +50,7 @@ void InterfacePrincipal::inicial()
         cout << "| 4. Entrar como administrador            |" << endl;
         cout << "| 5. Sair                                 |" << endl;
         cout << "===========================================" << endl;
-        cout << "Digite uma opcão: " << std::flush;
+        cout << "Digite uma opcão: " << std::flush; std::cin.clear(); 
 
         cin >> opcao;
 
@@ -140,9 +139,9 @@ void InterfacePrincipal::inicial()
             system("pause");
 
             break;
-        }
+        }   
     }
-}
+    }
 
 /**
  * @brief Realiza o login do eleitor.
@@ -159,15 +158,24 @@ bool InterfacePrincipal::login(vector<Eleitor> &eleitores)
 {
     string nome, cpf; // Variáveis para armazenar o nome e CPF do eleitor
 
+    try{
     cout << "╔═══════════════════════════════════════════════╗" << endl;
     cout << "║ Login                                         ║" << endl;
     cout << "╚═══════════════════════════════════════════════╝" << endl
          << endl;
-    cout << "Insira seu nome: ";
-    getline(cin >> std::ws, nome);
-    cout << "Insira seu CPF: ";
-    getline(cin >> std::ws, cpf);
-
+     cout << "Insira seu nome: ";
+        if (!getline(cin >> std::ws, nome))
+            throw std::ios_base::failure("Erro ao ler o nome.");
+        cout << "Insira seu CPF: ";
+        if (!getline(cin >> std::ws, cpf))
+            throw std::ios_base::failure("Erro ao ler o CPF.");
+    } catch (const std::ios_base::failure &e) {
+        std::cerr << "Erro de I/O ao ler os dados do eleitor: " << e.what() << std::endl;
+        Logger::log("Erro de I/O ao ler os dados do eleitor: " + std::string(e.what()));
+        system("pause");
+        limpar_dados();
+        return false; // Retorna falso se houver erro na leitura
+    }
     if (nome.empty() || cpf.empty())
     {
         cout << "Nome ou CPF não podem ser vazios." << endl;
