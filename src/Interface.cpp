@@ -11,7 +11,7 @@ using namespace std;
 
 string sessao_atual; // Variável global para armazenar sessão atual
 
-static vector<Eleitor> eleitores; // Vetor para armazenar os eleitores cadastrados (visível apenas neste arquivo)
+static vector<Eleitor> eleitores;    // Vetor para armazenar os eleitores cadastrados (visível apenas neste arquivo)
 static vector<Candidato> candidatos; // Vetor para armazenar os candidatos cadastrados (visível apenas neste arquivo)
 
 /**
@@ -21,7 +21,8 @@ static vector<Candidato> candidatos; // Vetor para armazenar os candidatos cadas
  * É útil para manter a interface do usuário limpa e organizada, especialmente após a execução de ações
  */
 
-void limpar_dados(){
+void limpar_dados()
+{
 
     system("clear || cls");
 }
@@ -33,10 +34,29 @@ void limpar_dados(){
  */
 void InterfacePrincipal::inicial()
 {
-    thread t1(carregarEleitores, ref(eleitores)); // Carrega os eleitores em uma thread separada
-    thread t2(carregarCandidatos, ref(candidatos)); // Carrega os candidatos em uma thread separada
-    
+    thread t1, t2; // Declaração de threads para carregar eleitores e candidatos
+
+    try
+    {
+        t1 = thread(carregarEleitores, ref(eleitores));   // Inicia a thread para carregar os eleitores
+        t2 = thread(carregarCandidatos, ref(candidatos)); // Inicia a thread para carregar os candidatos
+    }
+    catch (const std::system_error &e)
+    {
+
+        Logger::log("ERRO FATAL: Falha ao criar thread de carregamento de dados. " + std::string(e.what()));
+        std::cerr << "ERRO FATAL: Falha ao criar thread de carregamento de dados. " << e.what() << std::endl;
+        std::cout << "Candidatos e eleitores não serão carregados, tente reiniciar o sistema." << std::endl;
+
+        t1.join(); // Aguarda a thread de carregamento dos eleitores terminar
+        t2.join(); // Aguarda a thread de carregamento dos candidatos terminar
+
+        std::cout << "Pressione qualquer tecla para continuar..." << std::endl;
+        cin.get();
+    }
+
     int opcao = 0; // Variável para armazenar a opção escolhida pelo usuário
+
     while (1)
     {
         cout << "╔═══════════════════════════════════════════════╗" << endl;
@@ -50,7 +70,7 @@ void InterfacePrincipal::inicial()
         cout << "| 4. Entrar como administrador            |" << endl;
         cout << "| 5. Sair                                 |" << endl;
         cout << "===========================================" << endl;
-        cout << "Digite uma opcão: " << std::flush; std::cin.clear(); 
+        cout << "Digite uma opcão: ";
 
         cin >> opcao;
 
@@ -115,7 +135,7 @@ void InterfacePrincipal::inicial()
             login_adm();
 
             break;
-        
+
         case 5:
 
             limpar_dados();
@@ -130,18 +150,21 @@ void InterfacePrincipal::inicial()
         // Opção inválida
         default:
 
-            limpar_dados();
-
             cout << "Opcao invalida!" << endl;
 
             Logger::log("Opção inválida no menu inicial.");
 
+            cin.clear();                                                   // Limpa o estado de erro do cin
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignora o restante da linha de entrada
+
             system("pause");
 
+            limpar_dados();
+
             break;
-        }   
+        }
     }
-    }
+}
 
 /**
  * @brief Realiza o login do eleitor.
@@ -158,18 +181,21 @@ bool InterfacePrincipal::login(vector<Eleitor> &eleitores)
 {
     string nome, cpf; // Variáveis para armazenar o nome e CPF do eleitor
 
-    try{
-    cout << "╔═══════════════════════════════════════════════╗" << endl;
-    cout << "║ Login                                         ║" << endl;
-    cout << "╚═══════════════════════════════════════════════╝" << endl
-         << endl;
-     cout << "Insira seu nome: ";
+    try
+    {
+        cout << "╔═══════════════════════════════════════════════╗" << endl;
+        cout << "║ Login                                         ║" << endl;
+        cout << "╚═══════════════════════════════════════════════╝" << endl
+             << endl;
+        cout << "Insira seu nome: ";
         if (!getline(cin >> std::ws, nome))
             throw std::ios_base::failure("Erro ao ler o nome.");
         cout << "Insira seu CPF: ";
         if (!getline(cin >> std::ws, cpf))
             throw std::ios_base::failure("Erro ao ler o CPF.");
-    } catch (const std::ios_base::failure &e) {
+    }
+    catch (const std::ios_base::failure &e)
+    {
         std::cerr << "Erro de I/O ao ler os dados do eleitor: " << e.what() << std::endl;
         Logger::log("Erro de I/O ao ler os dados do eleitor: " + std::string(e.what()));
         system("pause");
@@ -497,7 +523,7 @@ void InterfaceEleitor::mostrar_candidatos(const std::vector<Candidato> &candidat
             }
 
             cout << "===========================================" << endl;
-            cout << "| Governadores:                           |" << endl;
+            cout << "| Governadores                            |" << endl;
             cout << "===========================================" << endl;
 
             // Percorre a lista de candidatos e exibe os dados dos candidatos que são governadores
@@ -544,7 +570,7 @@ void InterfaceEleitor::mostrar_candidatos(const std::vector<Candidato> &candidat
 
 void InterfaceEleitor::votando_presidente()
 {
-    int numero_voto_presidente; // Variável para armazenar o número do candidato escolhido pelo eleitor
+    int numero_voto_presidente;         // Variável para armazenar o número do candidato escolhido pelo eleitor
     bool presidente_encontrado = false; // Variável para armazenar se o candidato foi encontrado
 
     Logger::log("Iniciando o processo de votação para presidente.");
@@ -696,7 +722,7 @@ void InterfaceEleitor::votando_presidente()
 void InterfaceEleitor::votando_governador()
 {
 
-    int numero_voto_governador; // Variável para armazenar o número do candidato escolhido pelo eleitor para governador
+    int numero_voto_governador;         // Variável para armazenar o número do candidato escolhido pelo eleitor para governador
     bool governador_encontrado = false; // Variável para armazenar se o candidato foi encontrado
 
     if (candidatos.empty())
@@ -774,7 +800,7 @@ void InterfaceEleitor::votando_governador()
                 }
             }
 
-            //Caso o eleitor não tenha votado, percorre novamente a lista de eleitores
+            // Caso o eleitor não tenha votado, percorre novamente a lista de eleitores
             for (auto &eleitor : eleitores)
             {
                 // Recupera o número do eleitor da sessão atual
@@ -1046,13 +1072,14 @@ void InterfacePrincipal::cadastrar_eleitor(vector<Eleitor> &eleitores)
     // O número é gerado através da função gerar_titulo() definida em json_utils.hpp
     num_eleitor = gerar_titulo();
 
-
-    try{ 
-    Eleitor e1(false, false, nome, cpf, idade, num_eleitor); // Cria um novo objeto Eleitor com os dados fornecidos
-    eleitores.push_back(e1);    // Adiciona o novo eleitor ao vetor de eleitores
-    salvarEleitores(eleitores); // Salva os eleitores no arquivo JSON
+    try
+    {
+        Eleitor e1(false, false, nome, cpf, idade, num_eleitor); // Cria um novo objeto Eleitor com os dados fornecidos
+        eleitores.push_back(e1);                                 // Adiciona o novo eleitor ao vetor de eleitores
+        salvarEleitores(eleitores);                              // Salva os eleitores no arquivo JSON
     }
-    catch(const std::exception& e){
+    catch (const std::exception &e)
+    {
         Logger::log("Erro ao cadastrar eleitor: " + std::string(e.what()));
         cout << "Erro ao se cadastrar: " << e.what() << endl;
         system("pause");
@@ -1085,9 +1112,10 @@ void InterfacePrincipal::login_adm()
 
     Logger::log("Tentativa de autenticação do administrador.");
 
-    if(security.arquivo_aberto == false)
+    if (security.arquivo_aberto == false)
     {
-        cout << "Error: O arquivo hash.txt não pôde ser aberto!\n" << std::endl;
+        cout << "Error: O arquivo hash.txt não pôde ser aberto!\n"
+             << std::endl;
         Logger::log("Erro ao abrir o arquivo hash.txt");
         system("pause");
         limpar_dados();
@@ -1104,7 +1132,7 @@ void InterfacePrincipal::login_adm()
     {
         limpar_dados();
         InterfaceAdmin admin; // Cria um objeto InterfaceAdmin para acessar o menu do administrador
-        admin.menu_admin(); // Chama o menu do administrador se a autenticação for bem-sucedida
+        admin.menu_admin();   // Chama o menu do administrador se a autenticação for bem-sucedida
     }
 
     // Se a senha não for válida, exibe uma mensagem de erro e retorna ao menu inicial
@@ -1310,18 +1338,21 @@ void InterfaceAdmin::cadastrarCandidato(vector<Candidato> &candidatos)
     cout << "Digite o cargo disputado pelo candidato: ";
     getline(cin >> std::ws, cargo);
 
-    try{Candidato c1(nome, cpf, idade, num_eleitor, numero_candidato, nome_urna, partido, cargo); // Cria um novo objeto Candidato com os dados fornecidos
-    candidatos.push_back(c1);                                                                 // Adiciona o novo candidato ao vetor de candidatos
-    salvarCandidatos(candidatos);                                                             // Salva os candidatos no arquivo JSON
+    try
+    {
+        Candidato c1(nome, cpf, idade, num_eleitor, numero_candidato, nome_urna, partido, cargo); // Cria um novo objeto Candidato com os dados fornecidos
+        candidatos.push_back(c1);                                                                 // Adiciona o novo candidato ao vetor de candidatos
+        salvarCandidatos(candidatos);                                                             // Salva os candidatos no arquivo JSON
     }
-    catch(const std::exception& e){
+    catch (const std::exception &e)
+    {
         Logger::log("Erro ao cadastrar candidato: " + std::string(e.what()));
         cout << "Erro ao se cadastrar: " << e.what() << endl;
         system("pause");
         limpar_dados();
         return;
     }
-    
+
     Logger::log("Cadastro de candidato realizado com sucesso: " + nome + " - CPF: " + cpf + " - Número: " + std::to_string(numero_candidato));
 
     cout << "\nCandidato cadastrado com sucesso!" << endl;

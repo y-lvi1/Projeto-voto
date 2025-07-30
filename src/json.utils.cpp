@@ -99,9 +99,22 @@ void from_json(const json &j, Candidato &c)
 
 void salvarEleitores(const std::vector<Eleitor> &eleitores)
 {
-    json j_array = eleitores;
-    std::ofstream arquivo("eleitores.json");
-    arquivo << j_array.dump(4); // Formata o JSON com 4 espaços de indentação
+    try
+    {
+        std::ofstream arquivo("eleitores.json");
+
+        arquivo.exceptions(std::ofstream::failbit | std::ofstream::badbit); // Configura o arquivo para lançar exceções em caso de falha
+
+        json j_array = eleitores;
+        
+        arquivo << j_array.dump(4); // Formata o JSON com 4 espaços de indentação
+        
+    }catch(const std::ofstream::failure &e)
+    {
+        std::cerr << "ERRO FATAL ao escrever em 'eleitores.json'." << std::endl;
+        std::cerr << "Erro: " << e.what() << std::endl;
+        Logger::log("Exceção ao escrever em eleitores.json: " + std::string(e.what()));
+    }
 }
 
 /**
@@ -130,20 +143,14 @@ void carregarEleitores(std::vector<Eleitor> &eleitores)
     }
     catch (const json::parse_error &e)
     {
-        std::cerr << "Erro, o arquivo "
-                     "eleitores.json"
-                     " está corrompido!: "
-                  << e.what() << std::endl;
+        std::cerr << "Erro, o arquivo ""eleitores.json"" está corrompido!: "<< e.what() << std::endl;
         Logger::log("ERRO DE PARSE em eleitores.json: " + std::string(e.what()));
         eleitores.clear(); // Limpa a lista de eleitores em caso de erro
         return;
     }
     catch (const json::type_error &e)
     {
-        std::cerr << "Erro, o arquivo "
-                     "eleitores.json"
-                     " pode conter campos vazios ou corrompidos!: "
-                  << e.what() << std::endl;
+        std::cerr << "Erro, o arquivo ""eleitores.json"" pode conter campos vazios ou corrompidos!: "<< e.what() << std::endl;
         Logger::log("ERRO DE TIPO em eleitores.json: " + std::string(e.what()));
         eleitores.clear(); // Limpa a lista de eleitores em caso de erro
         return;
@@ -186,9 +193,22 @@ std::string gerar_titulo()
 
 void salvarCandidatos(const std::vector<Candidato> &candidatos)
 {
-    json j_array = candidatos;
-    std::ofstream arquivo("candidatos.json");
-    arquivo << j_array.dump(4);
+    try
+    {
+        std::ofstream arquivo("candidatos.json");
+
+        arquivo.exceptions(std::ofstream::failbit | std::ofstream::badbit); // Configura o arquivo para lançar exceções em caso de falha
+
+        json j_array = candidatos;
+
+        arquivo << j_array.dump(4);
+    }
+    catch (const std::ofstream::failure &e)
+    {
+        std::cerr << "ERRO FATAL ao escrever em 'candidatos.json'." << std::endl;
+        std::cerr << "Erro: " << e.what() << std::endl;
+        Logger::log("Exceção ao escrever em candidatos.json: " + std::string(e.what()));
+    }
 }
 
 /**

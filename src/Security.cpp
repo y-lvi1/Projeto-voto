@@ -17,18 +17,24 @@ using namespace std;
  * Se o arquivo for aberto com sucesso, lê o hash e o armazena na variável `hash_loaded`.
  */
 
-Security::Security()
+Security::Security() : arquivo_aberto(false) // Inicializa como falso por segurança
 {
-    ifstream file("hash.txt"); // Tenta abrir o arquivo hash.txt
+    std::ifstream arquivo;
 
-    // Verifica se o arquivo foi aberto com sucesso
-    if (!file.is_open())
-    {
-        arquivo_aberto = false; // Define a variável arquivo_aberto como false se o arquivo não puder ser aberto
+    arquivo.exceptions(std::ifstream::failbit | std::ifstream::badbit); // Configura para lançar exceções em caso de falha ou erro
+
+    try {
+        arquivo.open("hash.txt");
+        arquivo >> hash_loaded;
+        
+        this->arquivo_aberto = true;  // Define arquivo_aberto como true se o arquivo foi aberto com sucesso
+        Logger::log("Hash de segurança do admin carregado com sucesso.");
+
+    } catch (const std::ifstream::failure& e) {
+        std::cerr << "ERRO CRITICO: Não foi possível ler o arquivo 'hash.txt'." << std::endl;
+        std::cerr << "Erro: " << e.what() << std::endl;
+        Logger::log("Falha ao ler o arquivo hash.txt: " + std::string(e.what()));
     }
-
-    file >> hash_loaded; // Lê o hash do arquivo e armazena na variável hash_loaded
-    file.close(); // Fecha o arquivo após a leitura
 }
 
 /**
